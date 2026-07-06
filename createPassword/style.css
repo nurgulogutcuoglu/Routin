@@ -92,3 +92,29 @@ button:hover {
     color: #2c3e50;
     cursor: pointer;
 }
+
+/* Şifre gücü genel kutu düzeni */
+.strength-meter {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    /* "Şifre Durumu:" yazısının rengi */
+}
+
+/* Zayıf şifre durumu için kırmızı renk */
+.weak {
+    color: #e74c3c;
+    background-color: #fdeaea;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+/* Güçlü şifre durumu için yeşil renk */
+.strong {
+    color: #27ae60;
+    background-color: #e8f5e9;
+    padding: 3px 8px;
+    border-radius: 4px;
+}

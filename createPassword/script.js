@@ -1,4 +1,5 @@
 // HTML elemanlarını JS'e çekiyoruz
+const strengthText = document.getElementById('strengthText'); // Yeni eklenen güç göstergesi yazısı
 const resultInput = document.getElementById('passwordResult');
 const lengthInput = document.getElementById('passwordLength');
 const lengthValue = document.getElementById('lengthValue');
@@ -49,6 +50,16 @@ function generatePassword() {
 
     // Üretilen şifreyi ekrandaki kutuya yazdırıyoruz
     resultInput.value = generatedPassword;
+
+    // 🌟 ŞİFRE GÜCÜ KONTROLÜ (Yeni Eklenen Kısım)
+    // Şifre uzunluğu 10'dan küçükse zayıf (kırmızı), büyükse güçlü (yeşil) yapıyoruz
+    if (length < 10) {
+        strengthText.textContent = "Zayıf";
+        strengthText.className = "weak";  // CSS'teki .weak sınıfını giydirdik
+    } else {
+        strengthText.textContent = "Güçlü";
+        strengthText.className = "strong"; // CSS'teki .strong sınıfını giydirdik
+    }
 }
 
 // 3. Kopyalama Fonksiyonu
