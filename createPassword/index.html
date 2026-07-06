@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şifre Oluşturucu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="generator-container">
+        <h2>Güvenli Parola Oluştur</h2>
+
+        <div class="result-box">
+            <input type="text" id="passwordResult" readonly placeholder="Şifre burada görünecek">
+            <button id="copyBtn">Kopyala</button>
+        </div>
+
+        <div class="settings">
+            <div class="setting-item">
+                <label>Parola Uzunluğu: <span id="lengthValue">12</span></label>
+                <input type="range" id="passwordLength" min="6" max="30" value="12">
+            </div>
+
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="includeUppercase" checked> Büyük Harf</label>
+                <label><input type="checkbox" id="includeLowercase" checked> Küçük Harf</label>
+                <label><input type="checkbox" id="includeNumbers" checked> Sayılar</label>
+                <label><input type="checkbox" id="includeSymbols" checked> Semboller</label>
+            </div>
+        </div>
+
+        <button id="generateBtn" class="main-btn">Şifre Üret</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

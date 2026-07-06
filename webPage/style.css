@@ -1,0 +1,68 @@
+/* Sayfa genelindeki boşlukları sıfırlayalım ve arka planı ayarlayalım */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Ekranın tam ortasına getirmek için */
+}
+
+/* Giriş kutusunun (Form kabı) tasarımı */
+.login-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Hafif gölge efekti */
+    width: 350px;
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 25px;
+    color: #333333;
+}
+
+/* Kullanıcı adı ve şifre kutularının tasarımı */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    /* Kutuların taşmasını önler */
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+/* Kutuya tıklandığında kenarlık rengi değişsin */
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #007bff;
+}
+
+/* Giriş Butonunun Tasarımı */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+/* Fareyle butonun üzerine gelindiğinde rengi koyulaşsın */
+button:hover {
+    background-color: #0056b3;
+}
