@@ -1,79 +1,87 @@
 // HTML elemanlarını JS'e çekiyoruz
-const strengthText = document.getElementById('strengthText'); // Yeni eklenen güç göstergesi yazısı
+const strengthText = document.getElementById('strengthText');
 const resultInput = document.getElementById('passwordResult');
 const lengthInput = document.getElementById('passwordLength');
 const lengthValue = document.getElementById('lengthValue');
 
-const uppercaseCheck = document.getElementById('includeUppercase');
-const lowercaseCheck = document.getElementById('includeLowercase');
-const numbersCheck = document.getElementById('includeNumbers');
-const symbolsCheck = document.getElementById('includeSymbols');
-
 const generateBtn = document.getElementById('generateBtn');
 const copyBtn = document.getElementById('copyBtn');
 
-// 1. Slider (Kaydırıcı) hareket ettikçe ekrandaki sayıyı güncelleyelim
-lengthInput.addEventListener('input', function () {
+// Seçenekleri ve karşılık gelen karakter havuzlarını bir nesne dizisinde tutuyoruz
+const charSets = [
+    { el: document.getElementById('includeUppercase'), chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+    { el: document.getElementById('includeLowercase'), chars: "abcdefghijklmnopqrstuvwxyz" },
+    { el: document.getElementById('includeNumbers'), chars: "0123456789" },
+    { el: document.getElementById('includeSymbols'), chars: "!@#$%^&*()_+~`|}{[]:;?><,./-=" }
+];
+
+// 1. Slider hareket ettikçe ekrandaki sayıyı güncelle
+lengthInput.addEventListener('input', () => {
     lengthValue.textContent = lengthInput.value;
 });
 
 // 2. Şifre Üretme Fonksiyonu
 function generatePassword() {
-    const length = lengthInput.value;
+    const length = Number(lengthInput.value);
+    let charPool = ""; 
 
-    // Karakter havuzlarımız
-    const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
-    const numberChars = "0123456789";
-    const symbolChars = "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+    // İşaretli olan kutucukların karakterlerini ana havuza ekle
+    charSets.forEach(set => {
+        if (set.el.checked) charPool += set.chars;
+    });
 
-    let charPool = ""; // Kullanıcının seçimine göre dolacak ana havuz
-
-    // Kullanıcı hangi kutuyu seçtiyse o havuzu ana havuza ekliyoruz
-    if (uppercaseCheck.checked) charPool += uppercaseChars;
-    if (lowercaseCheck.checked) charPool += lowercaseChars;
-    if (numbersCheck.checked) charPool += numberChars;
-    if (symbolsCheck.checked) charPool += symbolChars;
-
-    // Eğer kullanıcı hiçbir kutuyu seçmediyse uyarı verelim
     if (charPool === "") {
-        alert("Lütfen en az bir karakter tipi seçin!");
+        resultInput.value = "Karakter tipi seçin!";
+        strengthText.textContent = "-";
+        strengthText.className = "";
         return;
     }
 
     let generatedPassword = "";
-    // İstenen uzunluk kadar döngü çalıştırıp havuzdan rastgele seçim yapıyoruz
     for (let i = 0; i < length; i++) {
         const randomIndex = Math.floor(Math.random() * charPool.length);
         generatedPassword += charPool[randomIndex];
     }
 
-    // Üretilen şifreyi ekrandaki kutuya yazdırıyoruz
     resultInput.value = generatedPassword;
 
-    // 🌟 ŞİFRE GÜCÜ KONTROLÜ (Yeni Eklenen Kısım)
-    // Şifre uzunluğu 10'dan küçükse zayıf (kırmızı), büyükse güçlü (yeşil) yapıyoruz
+    // ŞİFRE GÜCÜ KONTROLÜ
     if (length < 10) {
         strengthText.textContent = "Zayıf";
-        strengthText.className = "weak";  // CSS'teki .weak sınıfını giydirdik
+        strengthText.className = "weak";  
+    } else if (length < 16) {
+        strengthText.textContent = "Orta";
+        strengthText.className = "medium"; // CSS'e .medium (sarı/turuncu) sınıfı ekleyebilirsin
     } else {
         strengthText.textContent = "Güçlü";
-        strengthText.className = "strong"; // CSS'teki .strong sınıfını giydirdik
+        strengthText.className = "strong"; 
     }
 }
 
-// 3. Kopyalama Fonksiyonu
+// 3. Modern Kopyalama Fonksiyonu
 function copyPassword() {
-    if (resultInput.value === "") return; // Şifre yoksa işlem yapma
+    const pwd = resultInput.value;
+    if (!pwd || pwd === "Karakter tipi seçin!") return; 
 
-    resultInput.select(); // Metni seç
-    document.execCommand('copy'); // Panoya kopyala (En basit yöntem)
-    alert('Şifre panoya kopyalandı!');
+    // Modern pano (clipboard) API'si kullanımı
+    navigator.clipboard.writeText(pwd).then(() => {
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = "Kopyalandı! ✅";
+        copyBtn.style.backgroundColor = "#28a745"; // Geçici yeşil renk
+        
+        // 2 saniye sonra butonu eski haline döndür
+        setTimeout(() => {
+            copyBtn.textContent = originalText;
+            copyBtn.style.backgroundColor = ""; 
+        }, 2000);
+    }).catch(err => {
+        console.error('Kopyalama başarısız oldu: ', err);
+    });
 }
 
-// Butonlara tıklanınca çalışacak tetikleyiciler
+// Olay Dinleyicileri (Event Listeners)
 generateBtn.addEventListener('click', generatePassword);
 copyBtn.addEventListener('click', copyPassword);
 
-// Sayfa ilk açıldığında da otomatik bir şifre üretsin
+// Sayfa ilk açıldığında çalıştır
 generatePassword();
