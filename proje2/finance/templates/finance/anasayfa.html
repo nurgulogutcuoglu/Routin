@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>FintechX - Dijital Finans ve Öngörüler</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc; margin: 0; padding: 0;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 40px; box-sizing: border-box; z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.5rem; font-weight: 800; letter-spacing: 1px;
+            background: linear-gradient(to right, #38bdf8, #3b82f6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none;
+        }
+        .navbar-menu { display: flex; gap: 30px; }
+        .navbar-item { color: #94a3b8; text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+        .navbar-item:hover, .navbar-item.active { color: #38bdf8; }
+
+        /* MAIN CONTAINER */
+        .main-container { flex: 1; padding: 120px 40px 60px 40px; display: flex; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box; }
+        .page-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-align: center; background: linear-gradient(to right, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .page-subtitle { color: #94a3b8; margin-bottom: 40px; font-size: 1.1rem; text-align: center; }
+
+        /* GRID CONTAINER */
+        .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; max-width: 1100px; }
+        @media (max-width: 950px) { .grid-container { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 650px) { .grid-container { grid-template-columns: 1fr; } }
+
+        /* BLOG CARD */
+        .blog-card {
+            background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;
+            overflow: hidden; display: flex; flex-direction: column; position: relative;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .blog-card:hover { transform: translateY(-8px); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1); }
+
+        /* CARD ACTIONS */
+        .card-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 8px; z-index: 10; }
+        .action-btn { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.85rem; backdrop-filter: blur(4px); transition: all 0.2s; }
+        .edit-btn { background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; }
+        .edit-btn:hover { background: #f59e0b; color: #1e293b; transform: scale(1.1); }
+        .delete-btn { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; }
+        .delete-btn:hover { background: #ef4444; color: white; transform: scale(1.1); }
+
+        .image-wrapper { width: 100%; height: 200px; overflow: hidden; background: #1e293b; position: relative; }
+        .blog-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .blog-card:hover .blog-image { transform: scale(1.08); }
+
+        .category-badge { position: absolute; bottom: 12px; left: 12px; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+        .blog-content { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+        .blog-date { font-size: 0.8rem; color: #64748b; margin-bottom: 8px; }
+        .blog-title { font-size: 1.3rem; color: #f8fafc; margin: 0 0 12px 0; font-weight: 600; line-height: 1.4; }
+        .blog-text { font-size: 0.95rem; color: #94a3b8; line-height: 1.6; margin-bottom: 24px; flex-grow: 1; }
+
+        /* DEVAMINI OKU BUTONU */
+        .read-more { color: #38bdf8; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 4px; transition: gap 0.2s; cursor: pointer; border: none; background: none; padding: 0; }
+        .read-more:hover { gap: 8px; color: #7dd3fc; }
+
+        /* ADD BUTTON */
+        .add-card-button { border: 2px dashed rgba(148, 163, 184, 0.3); border-radius: 16px; background: rgba(30, 41, 59, 0.2); min-height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; color: #94a3b8; }
+        .add-card-button:hover { border-color: #38bdf8; background: rgba(56, 189, 248, 0.04); color: #38bdf8; transform: translateY(-4px); }
+        .plus-icon { font-size: 3.5rem; font-weight: 300; margin-bottom: 10px; }
+        .add-text { font-weight: 600; font-size: 1rem; letter-spacing: 0.5px; }
+
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 2000; }
+        .modal-content { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.08); padding: 35px; border-radius: 16px; width: 90%; max-width: 480px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; color: #f8fafc; }
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #64748b; transition: color 0.2s; }
+        .close-btn:hover { color: #f8fafc; }
+
+        /* DETAY MODALİNE ÖZEL GENİŞLİK */
+        .detail-modal-content { max-width: 650px; padding: 0; overflow: hidden; }
+        .detail-body { padding: 30px; }
+        .detail-image { width: 100%; height: 300px; object-fit: cover; }
+        .detail-title { font-size: 1.8rem; font-weight: 700; margin: 15px 0; color: #f8fafc; }
+        .detail-meta { display: flex; gap: 15px; align-items: center; color: #64748b; font-size: 0.85rem; margin-bottom: 20px; }
+        .detail-text { color: #cbd5e1; font-size: 1.05rem; line-height: 1.8; margin: 0; white-space: pre-line; }
+
+        .form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .form-group label { margin-bottom: 8px; font-weight: 500; color: #94a3b8; font-size: 0.9rem; }
+        .form-group input, .form-group textarea { padding: 12px; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; font-size: 0.95rem; color: #f8fafc; outline: none; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #38bdf8; }
+        .submit-btn { background: linear-gradient(to right, #38bdf8, #3b82f6); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: opacity 0.2s; }
+        .submit-btn:hover { opacity: 0.9; }
+
+        /* FOOTER */
+        .footer { background: #0f172a; border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 50px 40px 20px 40px; margin-top: auto; }
+        .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1100px; margin: 0 auto; }
+        @media (max-width: 800px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+        .footer-col h4 { color: #f8fafc; font-size: 1rem; margin-top: 0; margin-bottom: 20px; font-weight: 600; }
+        .footer-col p { color: #94a3b8; font-size: 0.85rem; line-height: 1.6; margin: 0; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: #94a3b8; text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .footer-links a:hover { color: #38bdf8; }
+        .footer-bottom { max-width: 1100px; margin: 40px auto 0 auto; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center; color: #64748b; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="{% url 'anasayfa' %}" class="navbar-brand">FintechX</a>
+        <div class="navbar-menu">
+            <a href="{% url 'anasayfa' %}" class="navbar-item active">Anasayfa</a>
+            <a href="#" class="navbar-item">FintechX Çözümleri</a>
+            <a href="#" class="navbar-item">Piyasa Analizi</a>
+            <a href="#" class="navbar-item">Finansal Okuryazarlık</a>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <h1 class="page-title">FintechX Dünyasından Öngörüler</h1>
+        <p class="page-subtitle">Geleceğin finans teknolojileri, yatırım stratejileri ve piyasa analizleri tek adreste.</p>
+
+        <div class="grid-container">
+
+            {% for yazi in yazilar %}
+            <div class="blog-card">
+                <div class="card-actions">
+                    <a href="{% url 'yazi_duzenle' yazi.id %}" class="action-btn edit-btn" title="Düzenle">✏️</a>
+                    <a href="{% url 'yazi_sil' yazi.id %}" class="action-btn delete-btn" title="Sil" onclick="return confirm('Bu içeriği silmek istediğinize emin misiniz?')">✕</a>
+                </div>
+
+                <div class="image-wrapper">
+                    {% if yazi.gorsel %}
+                        <img src="{{ yazi.gorsel.url }}" alt="{{ yazi.baslik }}" class="blog-image" id="img-{{ yazi.id }}">
+                    {% else %}
+                        <div class="blog-image" style="background-color: #1e293b;" id="img-{{ yazi.id }}"></div>
+                    {% endif %}
+                    <span class="category-badge" id="cat-{{ yazi.id }}">{{ yazi.kategori|default:"Finans" }}</span>
+                </div>
+
+                <div class="blog-content">
+                    <div class="blog-date" id="date-{{ yazi.id }}">{{ yazi.tarih|date:"M d, Y" }}</div>
+                    <h2 class="blog-title" id="title-{{ yazi.id }}">{{ yazi.baslik }}</h2>
+                    <div style="display:none;" id="fulltext-{{ yazi.id }}">{{ yazi.icerik }}</div>
+                    <p class="blog-text">{{ yazi.icerik|truncatewords:15 }}</p>
+
+                    <button class="read-more" onclick="openDetailModal('{{ yazi.id }}')">Devamını Oku →</button>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="add-card-button" onclick="openModal('addModal')">
+                <div class="plus-icon">+</div>
+                <div class="add-text">Yeni İçerik Ekle</div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content detail-modal-content">
+            <span class="close-btn" onclick="closeModal('detailModal')" style="right: 25px; top: 20px; z-index: 100; color: white; background: rgba(0,0,0,0.5); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">&times;</span>
+            <div id="modalImageContainer"></div>
+            <div class="detail-body">
+                <div class="detail-meta">
+                    <span id="modalCategory" style="color:#38bdf8; font-weight:600; text-transform:uppercase;"></span>
+                    <span id="modalDate"></span>
+                </div>
+                <h2 id="modalTitle" class="detail-title"></h2>
+                <p id="modalContent" class="detail-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('addModal')">&times;</span>
+            <h2>Yeni Finans Yazısı Ekle</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" name="baslik" required>
+                </div>
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <input type="text" name="kategori" placeholder="Örn: Yatırım, Bütçe, Kripto" required>
+                </div>
+                <div class="form-group">
+                    <label>İçerik</label>
+                    <textarea name="icerik" rows="5" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Görsel Seç</label>
+                    <input type="file" name="gorsel" accept="image/*">
+                </div>
+                <button type="submit" class="submit-btn">Yayınla 🚀</button>
+            </form>
+        </div>
+    </div>
+
+    {% if duzenlenecek_yazi %}
+    <div id="editModal" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <a href="{% url 'anasayfa' %}" class="close-btn" style="text-decoration: none;">&times;</a>
+            <h2>İçeriği Düzenle</h2>
+            <form method="POST" action="{% url 'yazi_duzenle' duzenlenecek_yazi.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" name="baslik" value="{{ duzenlenecek_yazi.baslik }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <input type="text" name="kategori" value="{{ duzenlenecek_yazi.kategori }}" required>
+                </div>
+                <div class="form-group">
+                    <label>İçerik</label>
+                    <textarea name="icerik" rows="5" required>{{ duzenlenecek_yazi.icerik }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Görsel Değiştir (İsteğe Bağlı)</label>
+                    <input type="file" name="gorsel" accept="image/*">
+                </div>
+                <button type="submit" class="submit-btn">Güncelle 🔄</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>FintechX</h4>
+                <p>Yeni nesil finansal okuryazarlık, blokzincir güvenliği ve kurumsal nakit akışı çözümleriyle geleceği bugünden şekillendirin.</p>
+            </div>
+            <div class="footer-col"><h4>Hızlı Bağlantılar</h4><ul class="footer-links"><li><a href="#">Hakkımızda</a></li><li><a href="#">Kariyer</a></li><li><a href="#">İletişim</a></li></ul></div>
+            <div class="footer-col"><h4>Çözümlerimiz</h4><ul class="footer-links"><li><a href="#">Nakit Akışı Yönetimi</a></li><li><a href="#">Kripto Varlık Analitiği</a></li></ul></div>
+            <div class="footer-col"><h4>Yasal</h4><ul class="footer-links"><li><a href="#">Gizlilik Politikası</a></li><li><a href="#">Kullanım Şartları</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 FintechX Global A.Ş. Tüm hakları saklıdır.</div>
+    </footer>
+
+    <script>
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        // Tıklanan kartın verilerini havada yakalayıp detay modaline basan sihirli fonksiyon
+        function openDetailModal(id) {
+            let title = document.getElementById('title-' + id).innerText;
+            let fulltext = document.getElementById('fulltext-' + id).innerText;
+            let category = document.getElementById('cat-' + id).innerText;
+            let date = document.getElementById('date-' + id).innerText;
+            let originalImg = document.getElementById('img-' + id);
+
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalContent').innerText = fulltext;
+            document.getElementById('modalCategory').innerText = category;
+            document.getElementById('modalDate').innerText = " • " + date;
+
+            let imgContainer = document.getElementById('modalImageContainer');
+            if (originalImg && originalImg.tagName === 'IMG') {
+                imgContainer.innerHTML = `<img src="${originalImg.src}" class="detail-image">`;
+            } else {
+                imgContainer.innerHTML = `<div class="detail-image" style="background-color: #1e293b;"></div>`;
+            }
+
+            openModal('detailModal');
+        }
+
+        window.onclick = function(event) {
+            let addModal = document.getElementById('addModal');
+            let detailModal = document.getElementById('detailModal');
+            if (event.target == addModal) addModal.style.display = 'none';
+            if (event.target == detailModal) detailModal.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
