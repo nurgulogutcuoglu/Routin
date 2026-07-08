@@ -35,7 +35,21 @@ class Film(models.Model):
             MaxValueValidator(5.0, message="Puan en fazla 5 olabilir.")
         ]
     )
+    imdb_puani = models.FloatField(
+        validators=[
+            MinValueValidator(0.0, message="IMDb Puanı en az 0.0 olabilir."),
+            MaxValueValidator(10.0, message="IMDb Puanı en fazla 10.0 olabilir.")
+        ],
+        blank=True,
+        null=True
+    )
+    yayin_yili = models.IntegerField(blank=True, null=True)
+    sure = models.CharField(max_length=50, blank=True, null=True)
+    fragman_url = models.URLField(blank=True, null=True)
     afis = models.ImageField(upload_to="afisler/", blank=True, null=True)
+    arkaplan_resmi = models.ImageField(upload_to="arkaplanlar/", blank=True, null=True)
     ozet = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return self.baslik
+

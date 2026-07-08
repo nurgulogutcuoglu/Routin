@@ -19,7 +19,10 @@ class YonetmenForm(forms.ModelForm):
 class FilmForm(forms.ModelForm):
     class Meta:
         model = Film
-        fields = ["baslik", "yonetmen", "tur", "puan", "afis", "ozet"]
+        fields = [
+            "baslik", "yonetmen", "tur", "puan", "imdb_puani", 
+            "yayin_yili", "sure", "fragman_url", "afis", "arkaplan_resmi", "ozet"
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,6 +30,8 @@ class FilmForm(forms.ModelForm):
             if field.required:
                 field.error_messages['required'] = 'Bu alanın doldurulması zorunludur.'
                 field.widget.attrs['placeholder'] = 'Zorunlu'
+            else:
+                field.widget.attrs['placeholder'] = 'İsteğe Bağlı'
         
         if 'yonetmen' in self.fields:
             self.fields['yonetmen'].empty_label = 'Yönetmen Seçin (Zorunlu)'
@@ -36,8 +41,32 @@ class FilmForm(forms.ModelForm):
                 'min': '0',
                 'max': '5',
                 'step': '0.1',
-                'placeholder': 'Zorunlu'
+                'placeholder': 'Puan (0-5)'
             })
             self.fields['puan'].error_messages.update({
                 'invalid': 'Lütfen geçerli bir sayısal puan girin.',
             })
+
+        if 'imdb_puani' in self.fields:
+            self.fields['imdb_puani'].widget.attrs.update({
+                'min': '0.0',
+                'max': '10.0',
+                'step': '0.1',
+                'placeholder': 'IMDb Puanı (0-10)'
+            })
+
+        if 'yayin_yili' in self.fields:
+            self.fields['yayin_yili'].widget.attrs.update({
+                'placeholder': 'Örn: 2024'
+            })
+
+        if 'sure' in self.fields:
+            self.fields['sure'].widget.attrs.update({
+                'placeholder': 'Örn: 2s 15dk'
+            })
+
+        if 'fragman_url' in self.fields:
+            self.fields['fragman_url'].widget.attrs.update({
+                'placeholder': 'YouTube Fragman URL'
+            })
+

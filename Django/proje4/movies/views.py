@@ -13,7 +13,27 @@ def populer_filmler(request):
     else:
         form = FilmForm()
     filmler = Film.objects.all()
-    return render(request, "movies/filmler.html", {"filmler": filmler, "form": form})
+    
+    # Manşet film seçimi (Önce arkaplan resmi olanlardan en yüksek puanlıyı, yoksa genel en yüksek puanlıyı seç)
+    manset_film = Film.objects.exclude(arkaplan_resmi="").order_by('-imdb_puani', '-puan').first()
+    if not manset_film:
+        manset_film = Film.objects.order_by('-imdb_puani', '-puan').first()
+
+    # Filmleri türlerine göre gruplama
+    genres_dict = {}
+    for film in filmler:
+        if film.tur not in genres_dict:
+            genres_dict[film.tur] = []
+        genres_dict[film.tur].append(film)
+
+    return render(request, "movies/filmler.html", {
+        "filmler": filmler, 
+        "form": form,
+        "manset_film": manset_film,
+        "genres_dict": genres_dict,
+    })
+
+
 
 
 def yonetmenler(request):
