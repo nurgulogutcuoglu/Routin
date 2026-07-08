@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ film.baslik }} - Film Detayı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0b0f19 !important;
+            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%) !important;
+            color: white;
+            padding: 40px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(white 1px, transparent 0);
+            background-size: 30px 30px;
+            opacity: 0.03;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* DEVASA SİNEMATİK PANEL */
+        .container {
+            background: rgba(30, 41, 59, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            max-width: 1250px;
+            width: 100%;
+            padding: 50px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+            display: flex;
+            gap: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-actions {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 30;
+        }
+
+        .action-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            border: none;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-edit {
+            background: #ff9900;
+            color: black;
+        }
+
+        .btn-close {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-close:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+        }
+
+        /* İSTEDİĞİN GİBİ BÜYÜTÜLEN AFİŞ ALANI */
+        .afis-sol {
+            flex: 1.1;
+            max-width: 440px;
+        }
+
+        .afis {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            height: 610px;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .afis-yok {
+            width: 100%;
+            height: 610px;
+            background: #1e293b;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #475569;
+            font-size: 80px;
+        }
+
+        .icerik-sag {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        h1 {
+            font-size: 46px;
+            margin-bottom: 8px;
+            color: #f8fafc;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .puan-bar {
+            font-size: 26px;
+            color: #ff9900;
+            font-weight: bold;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-container {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            font-size: 17px;
+            color: #cbd5e1;
+        }
+
+        .info-item strong {
+            color: #94a3b8;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-item a {
+            color: #ff9900;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .tur-yazi {
+            background: rgba(255, 153, 0, 0.1);
+            color: #ff9900;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1px solid rgba(255, 153, 0, 0.2);
+            display: inline-block;
+        }
+
+        .ozet-container {
+            margin-bottom: 30px;
+        }
+
+        .ozet-container strong {
+            color: #94a3b8;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ozet-text {
+            background: rgba(15, 23, 42, 0.4);
+            padding: 20px;
+            border-left: 4px solid #ff9900;
+            border-radius: 10px;
+            color: #e2e8f0;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="page-actions">
+        <a href="{% url 'film_duzenle' film.id %}" class="action-btn btn-edit" title="Düzenle"><i
+                class="fa-solid fa-pen"></i></a>
+        <a href="{% url 'populer_filmler' %}" class="action-btn btn-close" title="Kapat"><i
+                class="fa-solid fa-xmark"></i></a>
+    </div>
+
+    <!-- SOLDA DAHA BÜYÜK AFİŞ -->
+    <div class="afis-sol">
+        {% if film.afis %}
+            <img src="{{ film.afis.url }}" alt="{{ film.baslik }}" class="afis">
+        {% else %}
+            <div class="afis-yok"><i class="fa-solid fa-clapperboard"></i></div>
+        {% endif %}
+    </div>
+
+    <!-- SAĞDA BİLGİLER -->
+    <div class="icerik-sag">
+        <h1>{{ film.baslik }}</h1>
+        <div class="puan-bar"><i class="fa-solid fa-star"></i> {{ film.puan }} / 5</div>
+
+        <div class="meta-container">
+            <div class="info-item">
+                <strong><i class="fa-solid fa-video" style="color: #ff9900;"></i> Yönetmen</strong>
+                <a href="{% url 'yonetmen_detay' film.yonetmen.id %}">{{ film.yonetmen.isim }} ➔</a>
+            </div>
+            <div class="info-item">
+                <strong><i class="fa-solid fa-masks-theater" style="color: #ff9900;"></i> Tür</strong>
+                <span class="tur-yazi">{{ film.tur }}</span>
+            </div>
+        </div>
+
+        <div class="ozet-container">
+            <strong><i class="fa-solid fa-align-left" style="color: #ff9900;"></i> Film Özeti</strong>
+            <div class="ozet-text">
+                {{ film.ozet|default:"Bu film için henüz bir özet metni girilmedi." }}
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

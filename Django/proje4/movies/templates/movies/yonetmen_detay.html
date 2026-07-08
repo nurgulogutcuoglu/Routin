@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ yonetmen.isim }} - Profil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #020617 !important;
+            background-image: radial-gradient(circle at 50% 0%, #064e3b 0%, #0f172a 50%, #020617 100%) !important;
+            color: #f8fafc;
+            padding: 40px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 0);
+            background-size: 40px 40px;
+            opacity: 0.12;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 1200px DEVASA PANEL */
+        .container {
+            background: rgba(30, 41, 59, 0.35);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            max-width: 1100px;
+            width: 100%;
+            padding: 45px;
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 50px rgba(16, 185, 129, 0.05);
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-actions {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .btn-edit {
+            background: rgba(16, 185, 129, 0.9);
+            color: #ffffff;
+        }
+
+        .btn-edit:hover {
+            background: #059669;
+            box-shadow: 0 0 12px rgba(5, 150, 105, 0.5);
+        }
+
+        .btn-close {
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+        }
+
+        .btn-close:hover {
+            background: #ef4444;
+            color: white;
+            border-color: rgba(239, 68, 68, 0.2);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .profil-ust {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 40px;
+            margin-bottom: 40px;
+        }
+
+        .profil-foto {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #10b981;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .profil-foto:hover {
+            transform: scale(1.05);
+        }
+
+        .biyo-kutusu {
+            flex: 1;
+        }
+
+        .biyo-kutusu h1 {
+            font-size: 40px;
+            margin-bottom: 12px;
+            color: #f8fafc;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .biyo-kutusu p {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .film-listesi {
+            margin-top: 10px;
+        }
+
+        .film-listesi h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #f1f5f9;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* GÖZE ÇARPAN FİLM SATIRLARI */
+        .film-satir {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 20px 25px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #f97316;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .film-satir:hover {
+            background: rgba(30, 41, 59, 0.5);
+            transform: translateX(6px);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .film-link {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2);
+        }
+
+        .film-link:hover {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Twinkling star effect */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            width: 1.5px;
+            height: 1.5px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle var(--duration, 4s) infinite ease-in-out var(--delay, 0s);
+        }
+        .star-lg {
+            width: 2.5px;
+            height: 2.5px;
+            box-shadow: 0 0 6px #fff;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.15; transform: scale(0.8); }
+            50% { opacity: 0.8; transform: scale(1.3); }
+        }
+    </style>
+</head>
+<body>
+<div class="stars-container" id="stars"></div>
+
+<div class="container">
+    <div class="page-actions">
+        <a href="{% url 'yonetmen_duzenle' yonetmen.id %}" class="action-btn btn-edit" title="Düzenle"><i
+                class="fa-solid fa-pen"></i></a>
+        <a href="{% url 'yonetmenler' %}" class="action-btn btn-close" title="Kapat"><i
+                class="fa-solid fa-xmark"></i></a>
+    </div>
+
+    <div class="profil-ust">
+        {% if yonetmen.fotograf %}
+            <img src="{{ yonetmen.fotograf.url }}" class="profil-foto">
+        {% else %}
+            <div style="width:220px; height:220px; border-radius:50%; background:#1e293b; display:flex; align-items:center; justify-content:center; font-size:80px; border:5px solid #28a745; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
+                <i class="fa-solid fa-user"></i></div>
+        {% endif %}
+
+        <div class="biyo-kutusu">
+            <h1>{{ yonetmen.isim }}</h1>
+            <p>{{ yonetmen.biyografi|default:"Bu kıymetli yönetmene ait detaylı biyografi metni henüz sisteme işlenmedi." }}</p>
+        </div>
+    </div>
+
+    <div class="film-listesi">
+        <h2><i class="fa-solid fa-clapperboard" style="color: #ff9900;"></i> Yönettiği Tüm Yapımlar ({{ filmler.count }})
+        </h2>
+        {% for film in filmler %}
+            <div class="film-satir">
+                <div>
+                    <strong style="font-size: 20px; color: #f8fafc;">{{ film.baslik }}</strong>
+                    <span style="color: #94a3b8; margin-left: 20px; font-size: 15px;"><i
+                            class="fa-solid fa-masks-theater"></i> {{ film.tur }}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 30px;">
+                    <span style="color: #ff9900; font-weight: bold; font-size: 18px;"><i
+                            class="fa-solid fa-star"></i> {{ film.puan }}/5</span>
+                    <a href="{% url 'film_detay' film.id %}" class="film-link">İncele <i
+                            class="fa-solid fa-chevron-right" style="font-size: 12px;"></i></a>
+                </div>
+            </div>
+        {% empty %}
+            <p style="color: #475569; font-style: italic; padding: 15px;"><i class="fa-solid fa-info-circle"></i>
+                Sistemde bu yönetmene ait kayıtlı bir film kaydı henüz yok.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    // Stars background generator
+    document.addEventListener("DOMContentLoaded", function() {
+        const starsContainer = document.getElementById('stars');
+        const starCount = 80;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star' + (Math.random() > 0.85 ? ' star-lg' : '');
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.setProperty('--duration', (2 + Math.random() * 6) + 's');
+            star.style.setProperty('--delay', (Math.random() * 5) + 's');
+            starsContainer.appendChild(star);
+        }
+    });
+</script>
+</body>
+</html>

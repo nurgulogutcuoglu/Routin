@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Popüler Filmler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #020617 !important;
+            background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 50%, #020617 100%) !important;
+            color: #f8fafc;
+            padding: 40px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 0);
+            background-size: 40px 40px;
+            opacity: 0.15;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 30px;
+            border-radius: 16px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 800;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.5px;
+            border-left: none;
+            padding-left: 0;
+        }
+
+        .brand i {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+            color: #f8fafc;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav:hover {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: #f97316;
+            color: #f97316;
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* DÜZGÜN GRİD KART YAPISI */
+        .film-kart {
+            background: rgba(30, 41, 59, 0.3);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .film-kart:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 25px rgba(249, 115, 22, 0.15);
+            border-color: rgba(249, 115, 22, 0.4);
+        }
+
+        .kart-aksiyonlar {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 20;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .film-kart:hover .kart-aksiyonlar {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            transition: all 0.2s;
+            backdrop-filter: blur(8px);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .btn-edit {
+            background: rgba(249, 115, 22, 0.9);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-edit:hover {
+            background: #ea580c;
+            box-shadow: 0 0 12px rgba(234, 88, 12, 0.5);
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.9);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+            box-shadow: 0 0 12px rgba(220, 38, 38, 0.5);
+        }
+
+        .afis-container {
+            width: 100%;
+            height: 380px;
+            background: #0f172a;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .afis-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .film-kart:hover .afis-img {
+            transform: scale(1.05);
+        }
+
+        .afis-yok {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+            font-size: 64px;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+        }
+
+        /* HOVER OVERLAY KATMANI */
+        .incele-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.4));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 5;
+            color: #f97316;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .film-kart:hover .incele-overlay {
+            opacity: 1;
+        }
+
+        .incele-overlay i {
+            font-size: 36px;
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.4));
+        }
+
+        .kart-icerik {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex-grow: 1;
+            background: linear-gradient(to bottom, rgba(30, 41, 59, 0.2), rgba(15, 23, 42, 0.5));
+        }
+
+        .film-baslik {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f8fafc;
+            line-height: 1.3;
+            letter-spacing: -0.3px;
+            transition: color 0.3s;
+        }
+
+        .film-kart:hover .film-baslik {
+            color: #f97316;
+        }
+
+        .film-meta {
+            font-size: 13px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .film-meta i {
+            color: #ea580c;
+        }
+
+        .film-alt-bilgi {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tag-tur {
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fdba74;
+        }
+
+        .puan {
+            color: #fbbf24;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-arti-kart {
+            border: 2px dashed rgba(249, 115, 22, 0.3);
+            background: rgba(249, 115, 22, 0.02);
+            border-radius: 20px;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #64748b;
+            transition: all 0.4s ease;
+            gap: 15px;
+        }
+
+        .btn-arti-kart:hover {
+            border-color: #f97316;
+            color: #f97316;
+            background: rgba(249, 115, 22, 0.05);
+            box-shadow: 0 0 25px rgba(249, 115, 22, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .btn-arti-kart span {
+            font-size: 64px;
+            font-weight: 200;
+            line-height: 1;
+        }
+
+        .btn-arti-kart p {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-icerik {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 540px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(249, 115, 22, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-top: none;
+        }
+
+        .modal.show .modal-icerik {
+            transform: scale(1);
+        }
+
+        .modal-kapat {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-kapat:hover {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-icerik h2 {
+            color: #f8fafc;
+            font-weight: 800;
+            font-size: 24px;
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .modal-icerik h2 i {
+            color: #f97316;
+        }
+
+        .modal-icerik p {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .modal-icerik label {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-icerik input, .modal-icerik select, .modal-icerik textarea {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 16px;
+            color: #f8fafc;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .modal-icerik input:focus, .modal-icerik select:focus, .modal-icerik textarea:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .modal-icerik input[type="file"] {
+            padding: 8px;
+            background: transparent;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+
+        .modal-icerik input[type="file"]::file-selector-button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 10px;
+            transition: all 0.2s;
+        }
+
+        .modal-icerik input[type="file"]::file-selector-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-kaydet {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-kaydet:hover {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .errorlist {
+            color: #ef4444;
+            list-style: none;
+            padding: 0;
+            margin: 4px 0 0 0;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .errorlist li {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .errorlist li::before {
+            content: "⚠️";
+            font-size: 12px;
+        }
+
+        /* Twinkling star effect */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            width: 1.5px;
+            height: 1.5px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle var(--duration, 4s) infinite ease-in-out var(--delay, 0s);
+        }
+        .star-lg {
+            width: 2.5px;
+            height: 2.5px;
+            box-shadow: 0 0 6px #fff;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.15; transform: scale(0.8); }
+            50% { opacity: 0.8; transform: scale(1.3); }
+        }
+
+        /* Shine reflection animation on card hover */
+        .film-kart::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.08) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-25deg);
+            transition: all 0.75s ease;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .film-kart:hover::before {
+            left: 125%;
+        }
+
+        /* Pulsing eye icon */
+        .incele-overlay i {
+            font-size: 36px;
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.4));
+            animation: pulse-ring 2.5s infinite;
+        }
+        @keyframes pulse-ring {
+            0% { filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.3)); }
+            50% { filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.8)); transform: scale(1.05); }
+            100% { filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.3)); }
+        }
+
+        /* Genre Filter Styling */
+        .filter-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .filter-icon {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            pointer-events: none;
+            font-size: 13px;
+            z-index: 2;
+        }
+        .dropdown-arrow {
+            position: absolute;
+            right: 14px;
+            color: #94a3b8;
+            pointer-events: none;
+            font-size: 11px;
+            z-index: 2;
+        }
+        .filter-select {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            padding: 10px 36px 10px 36px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        .filter-select:hover, .filter-select:focus {
+            border-color: #f97316;
+            outline: none;
+            color: #f8fafc;
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Movie metadata icons modernized */
+        .film-meta {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px 12px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        /* Search Filter Styling */
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            pointer-events: none;
+            font-size: 13px;
+            z-index: 2;
+        }
+        .search-input {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            padding: 10px 14px 10px 36px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            width: 200px;
+        }
+        .search-input::placeholder {
+            color: #64748b;
+        }
+        .search-input:hover, .search-input:focus {
+            border-color: #f97316;
+            outline: none;
+            color: #f8fafc;
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+        /* Autocomplete Suggestions Box */
+        .suggestions-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+        .suggestion-item {
+            padding: 10px 15px;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .suggestion-item:hover {
+            background: rgba(249, 115, 22, 0.15);
+            color: #f97316;
+        }
+    </style>
+</head>
+<body>
+<div class="stars-container" id="stars"></div>
+
+<div class="navbar">
+    <div class="brand"><i class="fa-solid fa-film"></i> Popüler Filmler</div>
+    <div class="nav-buttons" style="display: flex; gap: 15px; align-items: center;">
+        <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="movieSearch" oninput="showSuggestions(this.value)" placeholder="Film Ara..." class="search-input" autocomplete="off">
+            <div id="suggestionsBox" class="suggestions-box"></div>
+        </div>
+        <div class="filter-wrapper">
+            <i class="fa-solid fa-filter filter-icon"></i>
+            <select id="genreFilter" onchange="filterMovies()" class="filter-select">
+                <option value="all">Tüm Türler</option>
+            </select>
+            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+        </div>
+        <a href="{% url 'yonetmenler' %}" class="btn-nav"><i class="fa-solid fa-user-tie"></i> Yönetmen Dünyası</a>
+    </div>
+</div>
+
+<div class="grid-container">
+    {% for film in filmler %}
+        <!-- KART YAPISINI KORUYAN VE ÇAKIŞMAYI ÖNLEYEN AKILLI TIKLAMA -->
+        <div class="film-kart"
+             onclick="if(!event.target.closest('.kart-aksiyonlar')) location.href='{% url 'film_detay' film.id %}';">
+
+            <div class="kart-aksiyonlar">
+                <a href="{% url 'film_duzenle' film.id %}" class="action-btn btn-edit" title="Düzenle"><i
+                        class="fa-solid fa-pen"></i></a>
+                <a href="{% url 'film_sil' film.id %}" class="action-btn btn-delete"
+                   onclick="return confirm('Bu filmi silmek istediğinize emin misiniz?')" title="Sil"><i
+                        class="fa-solid fa-trash-can"></i></a>
+            </div>
+
+            <div class="afis-container">
+                <div class="incele-overlay">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>İncele</span>
+                </div>
+                {% if film.afis %}
+                    <img src="{{ film.afis.url }}" alt="{{ film.baslik }}" class="afis-img">
+                {% else %}
+                    <div class="afis-yok"><i class="fa-solid fa-clapperboard"></i></div>
+                {% endif %}
+            </div>
+
+            <div class="kart-icerik">
+                <div>
+                    <div class="film-baslik">{{ film.baslik }}</div>
+                    <div class="film-meta"><i class="fa-solid fa-video"></i> {{ film.yonetmen.isim }}</div>
+                </div>
+                <div class="film-alt-bilgi">
+                    <span class="tag-tur">{{ film.tur }}</span>
+                    <span class="puan"><i class="fa-solid fa-star"></i> {{ film.puan }}/5</span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="btn-arti-kart" onclick="modalAc()">
+        <span>+</span>
+        <p>Film Ekle</p>
+    </div>
+</div>
+
+<div class="modal" id="filmModal" onclick="modalDisTikla(event)">
+    <div class="modal-icerik">
+        <span class="modal-kapat" onclick="modalKapat()"><i class="fa-solid fa-xmark"></i></span>
+        <h2 style="margin-bottom: 25px; text-align: center;"><i class="fa-solid fa-circle-plus"></i> Yeni Film Ekle</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-kaydet">Filmi Kaydet</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    {% if form.errors %}
+    window.addEventListener('DOMContentLoaded', () => {
+        modalAc();
+    });
+    {% endif %}
+
+    function modalAc() {
+        let m = document.getElementById('filmModal');
+        m.style.display = 'flex';
+        setTimeout(() => m.classList.add('show'), 10);
+    }
+
+    function modalKapat() {
+        let m = document.getElementById('filmModal');
+        m.classList.remove('show');
+        setTimeout(() => m.style.display = 'none', 300);
+    }
+
+    function modalDisTikla(event) {
+        let modalBox = document.getElementById('filmModal');
+        if (event.target === modalBox) {
+            modalKapat();
+        }
+    }
+
+    // Stars background generator and Dynamic genre populator
+    document.addEventListener("DOMContentLoaded", function() {
+        // Generate stars
+        const starsContainer = document.getElementById('stars');
+        const starCount = 80;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star' + (Math.random() > 0.85 ? ' star-lg' : '');
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.setProperty('--duration', (2 + Math.random() * 6) + 's');
+            star.style.setProperty('--delay', (Math.random() * 5) + 's');
+            starsContainer.appendChild(star);
+        }
+
+        // Sayı/rakam girilmesini engelleyen JS
+        document.querySelectorAll('#id_baslik, #id_tur').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+            input.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[0-9]/g, '');
+            });
+        });
+
+        // Populate genres
+        const genreFilter = document.getElementById('genreFilter');
+        const movieCards = document.querySelectorAll('.film-kart');
+        const genres = new Set();
+        
+        movieCards.forEach(card => {
+            const genreTag = card.querySelector('.tag-tur');
+            if (genreTag) {
+                genres.add(genreTag.textContent.trim());
+            }
+        });
+        
+        genres.forEach(genre => {
+            const option = document.createElement('option');
+            option.value = genre;
+            option.textContent = genre;
+            genreFilter.appendChild(option);
+        });
+    });
+
+    function filterMovies() {
+        const selectedGenre = document.getElementById('genreFilter').value;
+        const searchQuery = document.getElementById('movieSearch').value.trim();
+        const movieCards = document.querySelectorAll('.film-kart');
+        
+        movieCards.forEach(card => {
+            // Genre validation
+            const genreTag = card.querySelector('.tag-tur');
+            const genre = genreTag ? genreTag.textContent.trim() : '';
+            const genreMatch = (selectedGenre === 'all' || genre === selectedGenre);
+            
+            // Search validation (case-sensitive startsWith match)
+            const titleElement = card.querySelector('.film-baslik');
+            const title = titleElement ? titleElement.textContent.trim() : '';
+            const searchMatch = (searchQuery === '' || title.startsWith(searchQuery));
+            
+            if (genreMatch && searchMatch) {
+                card.style.display = '';
+                card.style.animation = 'fadeIn 0.4s ease';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Autocomplete and Suggestions functionality
+    function showSuggestions(value) {
+        const query = value.trim();
+        const suggestionsBox = document.getElementById('suggestionsBox');
+        
+        if (query === '') {
+            suggestionsBox.innerHTML = '';
+            suggestionsBox.style.display = 'none';
+            filterMovies();
+            return;
+        }
+        
+        const movieCards = document.querySelectorAll('.film-kart');
+        const matches = [];
+        
+        movieCards.forEach(card => {
+            const titleElement = card.querySelector('.film-baslik');
+            if (titleElement) {
+                const title = titleElement.textContent.trim();
+                // Case-sensitive startsWith match
+                if (title.startsWith(query)) {
+                    matches.push(title);
+                }
+            }
+        });
+        
+        if (matches.length > 0) {
+            suggestionsBox.innerHTML = '';
+            matches.forEach(title => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = title;
+                item.onclick = function() {
+                    document.getElementById('movieSearch').value = title;
+                    suggestionsBox.innerHTML = '';
+                    suggestionsBox.style.display = 'none';
+                    filterMovies();
+                };
+                suggestionsBox.appendChild(item);
+            });
+            suggestionsBox.style.display = 'block';
+        } else {
+            suggestionsBox.innerHTML = '';
+            suggestionsBox.style.display = 'none';
+        }
+        
+        filterMovies();
+    }
+
+    // Close suggestions box if clicked outside
+    document.addEventListener('click', function(e) {
+        const box = document.getElementById('suggestionsBox');
+        const input = document.getElementById('movieSearch');
+        if (box && input && e.target !== box && e.target !== input) {
+            box.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>
