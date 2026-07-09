@@ -10,9 +10,9 @@
 
         :root {
             --netflix-red: #e50914;
-            --netflix-dark: #141414;
-            --netflix-black: #000000;
-            --netflix-grey: #181818;
+            --netflix-dark: #050710;
+            --netflix-black: #020308;
+            --netflix-grey: #0c0f24;
             --text-primary: #ffffff;
             --text-secondary: #a3a3a3;
             --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -27,6 +27,13 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--netflix-dark);
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+                radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px),
+                linear-gradient(135deg, #050714 0%, #0c0f24 50%, #020308 100%);
+            background-size: 250px 250px, 400px 400px, 100% 100%;
+            background-position: 0 0, 120px 200px, 0 0;
+            background-attachment: fixed;
             color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
@@ -37,13 +44,16 @@
             width: 8px;
             height: 8px;
         }
+
         ::-webkit-scrollbar-track {
             background: var(--netflix-black);
         }
+
         ::-webkit-scrollbar-thumb {
             background: #333;
             border-radius: 4px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: var(--netflix-red);
         }
@@ -59,7 +69,7 @@
             left: 0;
             right: 0;
             z-index: 100;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
             transition: background-color 0.4s ease;
         }
 
@@ -123,7 +133,7 @@
         }
 
         .search-input {
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-primary);
             padding: 8px 12px 8px 35px;
@@ -137,7 +147,7 @@
         .search-input:focus {
             width: 280px;
             border-color: var(--netflix-red);
-            background: rgba(0,0,0,0.85);
+            background: rgba(0, 0, 0, 0.85);
         }
 
         .search-icon {
@@ -155,7 +165,7 @@
         }
 
         .filter-select {
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-primary);
             padding: 8px 30px 8px 12px;
@@ -221,8 +231,8 @@
             right: 0;
             bottom: 0;
             top: 0;
-            background: linear-gradient(to top, var(--netflix-dark) 0%, rgba(20,20,20,0.1) 60%, rgba(20,20,20,0.7) 100%),
-                        linear-gradient(to right, rgba(20,20,20,0.9) 0%, rgba(20,20,20,0.5) 40%, rgba(20,20,20,0) 100%);
+            background: linear-gradient(to top, var(--netflix-dark) 0%, rgba(20, 20, 20, 0.1) 60%, rgba(20, 20, 20, 0.7) 100%),
+            linear-gradient(to right, rgba(20, 20, 20, 0.9) 0%, rgba(20, 20, 20, 0.5) 40%, rgba(20, 20, 20, 0) 100%);
             z-index: 1;
             pointer-events: none;
         }
@@ -444,7 +454,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 80%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 80%);
             opacity: 0;
             display: flex;
             align-items: flex-end;
@@ -519,8 +529,8 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: var(--text-primary);
             display: flex;
             align-items: center;
@@ -620,6 +630,7 @@
         .suggestions-box::-webkit-scrollbar {
             width: 4px;
         }
+
         .suggestions-box::-webkit-scrollbar-thumb {
             background: #444;
         }
@@ -670,8 +681,8 @@
             right: 15px;
             width: 36px;
             height: 36px;
-            background: rgba(0,0,0,0.7);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-primary);
             border-radius: 50%;
             display: flex;
@@ -701,8 +712,11 @@
         .detail-video-container::after {
             content: '';
             position: absolute;
-            left: 0; right: 0; bottom: 0; top: 0;
-            background: linear-gradient(to top, var(--netflix-grey) 0%, rgba(24,24,24,0.1) 80%, rgba(24,24,24,0.5) 100%);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            background: linear-gradient(to top, var(--netflix-grey) 0%, rgba(24, 24, 24, 0.1) 80%, rgba(24, 24, 24, 0.5) 100%);
             pointer-events: none;
         }
 
@@ -724,7 +738,7 @@
             font-size: 32px;
             font-weight: 800;
             margin-bottom: 12px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         .detail-info-grid {
@@ -779,6 +793,32 @@
             text-decoration: underline;
         }
 
+        .modal-actor-link {
+            color: var(--text-primary) !important;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 4px 12px;
+            border-radius: 50px;
+            margin-right: 8px;
+            font-size: 13px;
+            display: inline-block;
+            transition: var(--transition-smooth);
+            font-weight: 500 !important;
+        }
+
+        .modal-actor-link:hover {
+            background: var(--netflix-red) !important;
+            text-decoration: none !important;
+        }
+
+        #modalActors {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 8px 6px;
+            vertical-align: middle;
+            margin-top: 5px;
+        }
+
         .detail-actions-panel {
             display: flex;
             gap: 12px;
@@ -807,7 +847,7 @@
         .detail-action-btn-grey {
             background: rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 10px 20px;
             border-radius: 4px;
             font-weight: 700;
@@ -830,7 +870,7 @@
             max-width: 550px;
             border-radius: 8px;
             padding: 40px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
             position: relative;
             border: 1px solid rgba(255, 255, 255, 0.05);
             transform: scale(0.9);
@@ -896,6 +936,46 @@
             padding: 5px 0;
         }
 
+        /* Checkbox list styling for Oyuncular */
+        #id_oyuncular {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 15px 0;
+            max-height: 150px;
+            overflow-y: auto;
+            background: #2b2b2b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        #id_oyuncular li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        #id_oyuncular li:last-child {
+            margin-bottom: 0;
+        }
+
+        #id_oyuncular input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: var(--netflix-red);
+        }
+
+        #id_oyuncular label {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            text-transform: none !important;
+            font-weight: 500 !important;
+            color: var(--text-primary) !important;
+            margin-bottom: 0 !important;
+        }
+
         .btn-form-submit {
             background: var(--netflix-red);
             color: var(--text-primary);
@@ -934,12 +1014,14 @@
         <ul class="nav-links">
             <li><a href="{% url 'populer_filmler' %}" class="active">Filmler</a></li>
             <li><a href="{% url 'yonetmenler' %}">Yönetmenler</a></li>
+            <li><a href="{% url 'oyuncular' %}">Oyuncular</a></li>
         </ul>
     </div>
     <div class="navbar-right">
         <div class="search-wrapper">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="movieSearch" oninput="showSuggestions(this.value)" placeholder="Film Ara..." class="search-input" autocomplete="off">
+            <input type="text" id="movieSearch" oninput="showSuggestions(this.value)" placeholder="Film Ara..."
+                   class="search-input" autocomplete="off">
             <div id="suggestionsBox" class="suggestions-box"></div>
         </div>
         <div class="filter-wrapper">
@@ -954,82 +1036,97 @@
 
 <!-- Hero / Spotlight Banner -->
 {% if manset_film %}
-<div class="hero-banner" style="background-image: url('{% if manset_film.arkaplan_resmi %}{{ manset_film.arkaplan_resmi.url }}{% else %}{{ manset_film.afis.url }}{% endif %}');">
-    <div class="hero-content">
-        <div class="hero-meta">
-            <span class="hero-badge">Öne Çıkan</span>
-            <span class="hero-rating"><i class="fa-solid fa-face-smile"></i> %{% widthratio manset_film.puan 5 100 %} Eşleşme</span>
-            {% if manset_film.yayin_yili %}
-                <span class="hero-year">{{ manset_film.yayin_yili }}</span>
-            {% endif %}
-            {% if manset_film.sure %}
-                <span class="hero-duration">{{ manset_film.sure }}</span>
-            {% endif %}
-            {% if manset_film.imdb_puani %}
-                <span class="hero-stars"><i class="fa-solid fa-star"></i> {{ manset_film.imdb_puani }} IMDb</span>
-            {% endif %}
-        </div>
-        <h1 class="hero-title">{{ manset_film.baslik }}</h1>
-        <p class="hero-desc">{{ manset_film.ozet|default:"Bu öne çıkan yapıt hakkında henüz bir özet girilmedi. Sinematik deneyime kapılmak için hemen detayları inceleyin." }}</p>
-        <div class="hero-buttons">
-            {% if manset_film.fragman_url %}
-                <button class="hero-btn hero-btn-play" onclick="openNetflixModal('{{ manset_film.id }}', true)"><i class="fa-solid fa-play"></i> Oynat</button>
-            {% endif %}
-            <button class="hero-btn hero-btn-info" onclick="openNetflixModal('{{ manset_film.id }}')"><i class="fa-solid fa-circle-info"></i> Daha Fazla Bilgi</button>
+    <div class="hero-banner" style="background-image: url('{% if manset_film.afis %}{{ manset_film.afis.url }}{% endif %}');">
+        <div class="hero-content">
+            <div class="hero-meta">
+                <span class="hero-badge">Öne Çıkan</span>
+                <span class="hero-rating"><i
+                        class="fa-solid fa-face-smile"></i> %{% widthratio manset_film.puan 5 100 %} Eşleşme</span>
+                {% if manset_film.yayin_yili %}
+                    <span class="hero-year">{{ manset_film.yayin_yili }}</span>
+                {% endif %}
+                {% if manset_film.sure %}
+                    <span class="hero-duration">{{ manset_film.sure }}</span>
+                {% endif %}
+                {% if manset_film.imdb_puani %}
+                    <span class="hero-stars"><i class="fa-solid fa-star"></i> {{ manset_film.imdb_puani }} IMDb</span>
+                {% endif %}
+            </div>
+            <h1 class="hero-title">{{ manset_film.baslik }}</h1>
+            <p class="hero-desc">{{ manset_film.ozet|default:"Bu öne çıkan yapıt hakkında henüz bir özet girilmedi. Sinematik deneyime kapılmak için hemen detayları inceleyin." }}</p>
+            <div class="hero-buttons">
+                {% if manset_film.fragman_url %}
+                    <button class="hero-btn hero-btn-play" onclick="openNetflixModal('{{ manset_film.id }}', true)"><i
+                            class="fa-solid fa-play"></i> Oynat
+                    </button>
+                {% endif %}
+                <button class="hero-btn hero-btn-info" onclick="openNetflixModal('{{ manset_film.id }}')"><i
+                        class="fa-solid fa-circle-info"></i> Daha Fazla Bilgi
+                </button>
+            </div>
         </div>
     </div>
-</div>
 {% endif %}
 
 <!-- Categorized Sliders -->
 <div id="slidersSection">
     {% for genre, genre_filmler in genres_dict.items %}
-    <div class="category-row" data-genre-name="{{ genre }}">
-        <h2 class="category-title">{{ genre }}</h2>
-        <div class="slider-container">
-            <button class="slider-btn prev-btn" onclick="slide(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="slider-track">
-                {% for film in genre_filmler %}
-                <div class="film-kart" 
-                     data-id="{{ film.id }}"
-                     data-genre="{{ film.tur }}"
-                     data-title="{{ film.baslik }}"
-                     onclick="if(!event.target.closest('.kart-actions')) openNetflixModal('{{ film.id }}');">
-                    
-                    <div class="kart-afis-container">
-                        {% if film.afis %}
-                            <img src="{{ film.afis.url }}" alt="{{ film.baslik }}" class="kart-afis-img" loading="lazy">
-                        {% else %}
-                            <div class="kart-yok"><i class="fa-solid fa-clapperboard"></i></div>
-                        {% endif %}
-                        <div class="kart-overlay">
-                            <div class="kart-actions">
-                                <button class="kart-btn kart-btn-play" title="İncele" onclick="openNetflixModal('{{ film.id }}')"><i class="fa-solid fa-eye"></i></button>
-                                <a href="{% url 'film_duzenle' film.id %}" class="kart-btn" title="Düzenle" onclick="event.stopPropagation();"><i class="fa-solid fa-pen"></i></a>
-                                <a href="{% url 'film_sil' film.id %}" class="kart-btn kart-btn-delete" title="Sil" onclick="event.stopPropagation(); return confirm('Bu filmi silmek istediğinize emin misiniz?');"><i class="fa-solid fa-trash-can"></i></a>
+        <div class="category-row" data-genre-name="{{ genre }}">
+            <h2 class="category-title">{{ genre }}</h2>
+            <div class="slider-container">
+                <button class="slider-btn prev-btn" onclick="slide(this, -1)"><i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="slider-track">
+                    {% for film in genre_filmler %}
+                        <div class="film-kart"
+                             data-id="{{ film.id }}"
+                             data-genre="{{ film.tur }}"
+                             data-title="{{ film.baslik }}"
+                             onclick="if(!event.target.closest('.kart-actions')) openNetflixModal('{{ film.id }}');">
+
+                            <div class="kart-afis-container">
+                                {% if film.afis %}
+                                    <img src="{{ film.afis.url }}" alt="{{ film.baslik }}" class="kart-afis-img"
+                                         loading="lazy">
+                                {% else %}
+                                    <div class="kart-yok"><i class="fa-solid fa-clapperboard"></i></div>
+                                {% endif %}
+                                <div class="kart-overlay">
+                                    <div class="kart-actions">
+                                        <button class="kart-btn kart-btn-play" title="İncele"
+                                                onclick="openNetflixModal('{{ film.id }}')"><i
+                                                class="fa-solid fa-eye"></i></button>
+                                        <a href="{% url 'film_duzenle' film.id %}" class="kart-btn" title="Düzenle"
+                                           onclick="event.stopPropagation();"><i class="fa-solid fa-pen"></i></a>
+                                        <a href="{% url 'film_sil' film.id %}" class="kart-btn kart-btn-delete"
+                                           title="Sil"
+                                           onclick="event.stopPropagation(); return confirm('Bu filmi silmek istediğinize emin misiniz?');"><i
+                                                class="fa-solid fa-trash-can"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="kart-info-pane">
+                                <div class="kart-title">{{ film.baslik }}</div>
+                                <div class="kart-meta-row">
+                                    <span class="kart-rating-green">%{% widthratio film.puan 5 100 %} Eşleşme</span>
+                                    {% if film.imdb_puani %}
+                                        <span class="kart-imdb-badge"><i
+                                                class="fa-solid fa-star"></i> {{ film.imdb_puani }}</span>
+                                    {% endif %}
+                                    {% if film.yayin_yili %}
+                                        <span class="kart-year">{{ film.yayin_yili }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="kart-genres">{{ film.yonetmen.isim }}</div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="kart-info-pane">
-                        <div class="kart-title">{{ film.baslik }}</div>
-                        <div class="kart-meta-row">
-                            <span class="kart-rating-green">%{% widthratio film.puan 5 100 %} Eşleşme</span>
-                            {% if film.imdb_puani %}
-                                <span class="kart-imdb-badge"><i class="fa-solid fa-star"></i> {{ film.imdb_puani }}</span>
-                            {% endif %}
-                            {% if film.yayin_yili %}
-                                <span class="kart-year">{{ film.yayin_yili }}</span>
-                            {% endif %}
-                        </div>
-                        <div class="kart-genres">{{ film.yonetmen.isim }}</div>
-                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+                <button class="slider-btn next-btn" onclick="slide(this, 1)"><i class="fa-solid fa-chevron-right"></i>
+                </button>
             </div>
-            <button class="slider-btn next-btn" onclick="slide(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
-    </div>
     {% endfor %}
 
     <!-- Permanent Quick Actions Row (Always Visible) -->
@@ -1050,7 +1147,7 @@
 <div class="modal" id="netflixDetailModal" onclick="closeNetflixModalOnOutsideClick(event)">
     <div class="netflix-detail-content">
         <span class="modal-kapat" onclick="closeNetflixModal()"><i class="fa-solid fa-xmark"></i></span>
-        
+
         <div class="detail-video-container" id="detailModalVideoContainer">
             <!-- Dynamic content goes here (YouTube Iframe or Background Image) -->
         </div>
@@ -1066,19 +1163,26 @@
                 <div class="detail-summary" id="modalSummary"></div>
                 <div class="detail-actions-panel">
                     <a href="#" id="modalEditBtn" class="detail-action-btn-grey"><i class="fa-solid fa-pen"></i> Düzenle</a>
-                    <a href="#" id="modalDeleteBtn" class="detail-action-btn-red" onclick="return confirm('Bu filmi kütüphaneden silmek istediğinize emin misiniz?');"><i class="fa-solid fa-trash"></i> Sil</a>
+                    <a href="#" id="modalDeleteBtn" class="detail-action-btn-red"
+                       onclick="return confirm('Bu filmi kütüphaneden silmek istediğinize emin misiniz?');"><i
+                            class="fa-solid fa-trash"></i> Sil</a>
                 </div>
             </div>
-            
+
             <div class="detail-right">
                 <div class="detail-right-item">
                     <strong>Yönetmen:</strong> <span id="modalDirector"></span>
                 </div>
                 <div class="detail-right-item">
-                    <strong>Tür:</strong> <span id="modalGenre" class="hero-badge" style="background: rgba(255,255,255,0.1); margin-left: 5px;"></span>
+                    <strong>Oyuncular:</strong> <span id="modalActors"></span>
+                </div>
+                <div class="detail-right-item">
+                    <strong>Tür:</strong> <span id="modalGenre" class="hero-badge"
+                                                style="background: rgba(255,255,255,0.1); margin-left: 5px;"></span>
                 </div>
                 <div class="detail-right-item" id="modalImdbContainer">
-                    <strong>IMDb Puanı:</strong> <span id="modalImdb" style="color: #fbbf24; font-weight: 700;"></span> / 10
+                    <strong>IMDb Puanı:</strong> <span id="modalImdb" style="color: #fbbf24; font-weight: 700;"></span>
+                    / 10
                 </div>
                 <div class="detail-right-item">
                     <strong>Puanlama:</strong> <span id="modalScore" style="font-weight: 700;"></span> / 5
@@ -1092,13 +1196,14 @@
 <div class="modal" id="filmModal" onclick="modalDisTikla(event)">
     <div class="form-modal-content">
         <span class="modal-kapat" onclick="modalKapat()"><i class="fa-solid fa-xmark"></i></span>
-        <h2 class="form-modal-title"><i class="fa-solid fa-circle-plus" style="color: var(--netflix-red);"></i> Yeni Film Ekle</h2>
-        
+        <h2 class="form-modal-title"><i class="fa-solid fa-circle-plus" style="color: var(--netflix-red);"></i> Yeni
+            Film Ekle</h2>
+
         {% if form.errors %}
-        <div class="form-errors">
-            <strong>Lütfen hataları giderin:</strong>
-            {{ form.errors }}
-        </div>
+            <div class="form-errors">
+                <strong>Lütfen hataları giderin:</strong>
+                {{ form.errors }}
+            </div>
         {% endif %}
 
         <form method="POST" enctype="multipart/form-data">
@@ -1113,28 +1218,36 @@
 <script>
     const moviesData = {
         {% for film in filmler %}
-        "{{ film.id }}": {
-            "id": "{{ film.id }}",
-            "baslik": "{{ film.baslik|escapejs }}",
-            "yonetmen": "{{ film.yonetmen.isim|escapejs }}",
-            "yonetmen_url": "{% url 'yonetmen_detay' film.yonetmen.id %}",
-            "tur": "{{ film.tur|escapejs }}",
-            "puan": "{{ film.puan }}",
-            "imdb_puani": "{{ film.imdb_puani|default:'N/A' }}",
-            "yayin_yili": "{{ film.yayin_yili|default:'N/A' }}",
-            "sure": "{{ film.sure|default:'N/A' }}",
-            "fragman_url": "{{ film.fragman_url|default:'' }}",
-            "afis": "{% if film.afis %}{{ film.afis.url }}{% else %}{% endif %}",
-            "arkaplan": "{% if film.arkaplan_resmi %}{{ film.arkaplan_resmi.url }}{% elif film.afis %}{{ film.afis.url }}{% else %}{% endif %}",
-            "ozet": "{{ film.ozet|default:'Bu film için henüz bir özet metni girilmedi.'|escapejs }}",
-            "edit_url": "{% url 'film_duzenle' film.id %}",
-            "delete_url": "{% url 'film_sil' film.id %}"
-        },
+            "{{ film.id }}": {
+                "id": "{{ film.id }}",
+                "baslik": "{{ film.baslik|escapejs }}",
+                "yonetmen": "{{ film.yonetmen.isim|escapejs }}",
+                "yonetmen_url": "{% url 'yonetmen_detay' film.yonetmen.id %}",
+                "oyuncular": [
+                    {% for oyuncu in film.oyuncular.all %}
+                    {
+                        "isim": "{{ oyuncu.isim|escapejs }}",
+                        "url": "{% url 'oyuncu_detay' oyuncu.id %}"
+                    }{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                "tur": "{{ film.tur|escapejs }}",
+                "puan": "{{ film.puan }}",
+                "imdb_puani": "{{ film.imdb_puani|default:'N/A' }}",
+                "yayin_yili": "{{ film.yayin_yili|default:'N/A' }}",
+                "sure": "{{ film.sure|default:'N/A' }}",
+                "fragman_url": "{{ film.fragman_url|default:'' }}",
+                "afis": "{% if film.afis %}{{ film.afis.url }}{% else %}{% endif %}",
+                "arkaplan": "{% if film.afis %}{{ film.afis.url }}{% else %}{% endif %}",
+                "ozet": "{{ film.ozet|default:'Bu film için henüz bir özet metni girilmedi.'|escapejs }}",
+                "edit_url": "{% url 'film_duzenle' film.id %}",
+                "delete_url": "{% url 'film_sil' film.id %}"
+            },
         {% endfor %}
     };
 
     // Scroll Navbar logic
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         const navbar = document.getElementById('mainNavbar');
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -1144,16 +1257,16 @@
     });
 
     // Populate category filters
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const genreFilter = document.getElementById('genreFilter');
         const genres = new Set();
-        
+
         Object.values(moviesData).forEach(movie => {
             if (movie.tur) {
                 genres.add(movie.tur);
             }
         });
-        
+
         genres.forEach(genre => {
             const option = document.createElement('option');
             option.value = genre;
@@ -1162,7 +1275,7 @@
         });
 
         {% if form.errors %}
-        modalAc();
+            modalAc();
         {% endif %}
     });
 
@@ -1173,7 +1286,7 @@
         const cardWidth = 252; // 240px card + 12px gap
         const visibleWidth = track.clientWidth;
         const scrollAmount = cardWidth * Math.floor(visibleWidth / cardWidth) * direction;
-        
+
         track.scrollBy({
             left: scrollAmount,
             behavior: 'smooth'
@@ -1191,6 +1304,16 @@
         document.getElementById('modalDuration').textContent = movie.sure !== 'N/A' ? movie.sure : '';
         document.getElementById('modalSummary').textContent = movie.ozet;
         document.getElementById('modalDirector').innerHTML = `<a href="${movie.yonetmen_url}">${movie.yonetmen} ➔</a>`;
+        
+        const actorsSpan = document.getElementById('modalActors');
+        if (movie.oyuncular && movie.oyuncular.length > 0) {
+            actorsSpan.innerHTML = movie.oyuncular.map(actor => 
+                `<a href="${actor.url}" class="modal-actor-link">${actor.isim}</a>`
+            ).join('');
+        } else {
+            actorsSpan.textContent = 'Oyuncu kadrosu eklenmemiş.';
+        }
+        
         document.getElementById('modalGenre').textContent = movie.tur;
         document.getElementById('modalScore').textContent = movie.puan;
 
@@ -1258,11 +1381,11 @@
     function closeNetflixModal() {
         const modal = document.getElementById('netflixDetailModal');
         modal.classList.remove('show');
-        
+
         // Stop playing video on close
         const videoContainer = document.getElementById('detailModalVideoContainer');
         videoContainer.innerHTML = '';
-        
+
         setTimeout(() => modal.style.display = 'none', 300);
     }
 
@@ -1298,16 +1421,16 @@
     function filterMovies() {
         const selectedGenre = document.getElementById('genreFilter').value;
         const searchQuery = document.getElementById('movieSearch').value.trim().toLowerCase();
-        
+
         const cards = document.querySelectorAll('.film-kart');
-        
+
         cards.forEach(card => {
             const genre = card.getAttribute('data-genre');
             const title = card.getAttribute('data-title').toLowerCase();
-            
+
             const genreMatch = (selectedGenre === 'all' || genre === selectedGenre);
             const searchMatch = (searchQuery === '' || title.includes(searchQuery));
-            
+
             if (genreMatch && searchMatch) {
                 card.style.display = 'block';
             } else {
@@ -1324,10 +1447,10 @@
                 return;
             }
             const visibleCards = row.querySelectorAll('.film-kart:not([style*="display: none"])');
-            
+
             // Check if matches genre selection
             const genreRowMatch = (selectedGenre === 'all' || rowGenre === selectedGenre);
-            
+
             if (genreRowMatch && visibleCards.length > 0) {
                 row.style.display = 'block';
             } else {
@@ -1340,28 +1463,28 @@
     function showSuggestions(value) {
         const query = value.trim().toLowerCase();
         const suggestionsBox = document.getElementById('suggestionsBox');
-        
+
         if (query === '') {
             suggestionsBox.innerHTML = '';
             suggestionsBox.style.display = 'none';
             filterMovies();
             return;
         }
-        
+
         const matches = [];
         Object.values(moviesData).forEach(movie => {
             if (movie.baslik.toLowerCase().includes(query)) {
                 matches.push(movie);
             }
         });
-        
+
         if (matches.length > 0) {
             suggestionsBox.innerHTML = '';
             matches.slice(0, 5).forEach(movie => {
                 const item = document.createElement('div');
                 item.className = 'suggestion-item';
                 item.textContent = movie.baslik;
-                item.onclick = function() {
+                item.onclick = function () {
                     document.getElementById('movieSearch').value = movie.baslik;
                     suggestionsBox.innerHTML = '';
                     suggestionsBox.style.display = 'none';
@@ -1375,12 +1498,12 @@
             suggestionsBox.innerHTML = '';
             suggestionsBox.style.display = 'none';
         }
-        
+
         filterMovies();
     }
 
     // Close suggestions box if clicked outside
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         const box = document.getElementById('suggestionsBox');
         const input = document.getElementById('movieSearch');
         if (box && input && e.target !== box && e.target !== input) {

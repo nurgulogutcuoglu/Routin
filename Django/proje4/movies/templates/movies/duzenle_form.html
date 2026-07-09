@@ -10,9 +10,9 @@
 
         :root {
             --netflix-red: #e50914;
-            --netflix-dark: #141414;
-            --netflix-black: #000000;
-            --netflix-grey: #181818;
+            --netflix-dark: #080d1a;
+            --netflix-black: #050811;
+            --netflix-grey: #0d1527;
             --text-primary: #ffffff;
             --text-secondary: #a3a3a3;
             --transition-smooth: all 0.3s ease;
@@ -27,6 +27,12 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--netflix-dark);
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+                radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px),
+                radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 300px 300px, 400px 400px, 250px 250px;
+            background-position: 0 0, 90px 150px, 130px 240px;
             color: var(--text-primary);
             display: flex;
             align-items: center;
@@ -95,6 +101,46 @@
         input[type="file"] {
             padding: 8px 0;
             background: transparent;
+        }
+
+        /* Checkbox list styling for Oyuncular */
+        #id_oyuncular {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 15px 0;
+            max-height: 150px;
+            overflow-y: auto;
+            background: #333;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        #id_oyuncular li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        #id_oyuncular li:last-child {
+            margin-bottom: 0;
+        }
+
+        #id_oyuncular input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: var(--netflix-red);
+        }
+
+        #id_oyuncular label {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            text-transform: none !important;
+            font-weight: 500 !important;
+            color: var(--text-primary) !important;
+            margin-bottom: 0 !important;
         }
 
         .btn {

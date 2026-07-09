@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Film, Yonetmen
+from .models import Film, Yonetmen, Oyuncu
 
 
 class YonetmenForm(forms.ModelForm):
@@ -16,13 +16,29 @@ class YonetmenForm(forms.ModelForm):
                 field.widget.attrs['placeholder'] = 'Zorunlu'
 
 
+class OyuncuForm(forms.ModelForm):
+    class Meta:
+        model = Oyuncu
+        fields = ["isim", "biyografi", "fotograf"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field.required:
+                field.error_messages['required'] = 'Bu alanın doldurulması zorunludur.'
+                field.widget.attrs['placeholder'] = 'Zorunlu'
+
+
 class FilmForm(forms.ModelForm):
     class Meta:
         model = Film
         fields = [
-            "baslik", "yonetmen", "tur", "puan", "imdb_puani", 
-            "yayin_yili", "sure", "fragman_url", "afis", "arkaplan_resmi", "ozet"
+            "baslik", "yonetmen", "oyuncular", "tur", "puan", "imdb_puani",
+            "yayin_yili", "sure", "fragman_url", "afis", "ozet"
         ]
+        widgets = {
+            'oyuncular': forms.CheckboxSelectMultiple(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -32,10 +48,16 @@ class FilmForm(forms.ModelForm):
                 field.widget.attrs['placeholder'] = 'Zorunlu'
             else:
                 field.widget.attrs['placeholder'] = 'İsteğe Bağlı'
-        
+
         if 'yonetmen' in self.fields:
             self.fields['yonetmen'].empty_label = 'Yönetmen Seçin (Zorunlu)'
-            
+
+            # Oyuncular alanı için açıklama ekledik
+        if 'oyuncular' in self.fields:
+            self.fields['oyuncular'].help_text = 'Ctrl veya Cmd tuşuna basarak birden fazla oyuncu seçebilirsiniz.'
+
+        # (puan, imdb_puani vb. diğer ayarlar olduğu gibi kalacak...)
+
         if 'puan' in self.fields:
             self.fields['puan'].widget.attrs.update({
                 'min': '0',
@@ -69,4 +91,3 @@ class FilmForm(forms.ModelForm):
             self.fields['fragman_url'].widget.attrs.update({
                 'placeholder': 'YouTube Fragman URL'
             })
-

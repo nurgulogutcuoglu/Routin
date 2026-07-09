@@ -10,9 +10,9 @@
 
         :root {
             --netflix-red: #e50914;
-            --netflix-dark: #141414;
-            --netflix-black: #000000;
-            --netflix-grey: #181818;
+            --netflix-dark: #050710;
+            --netflix-black: #020308;
+            --netflix-grey: #0c0f24;
             --text-primary: #ffffff;
             --text-secondary: #a3a3a3;
         }
@@ -26,6 +26,13 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--netflix-dark);
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+                radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px),
+                linear-gradient(135deg, #050714 0%, #0c0f24 50%, #020308 100%);
+            background-size: 250px 250px, 400px 400px, 100% 100%;
+            background-position: 0 0, 120px 200px, 0 0;
+            background-attachment: fixed;
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
@@ -59,7 +66,7 @@
             background: var(--netflix-grey);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
@@ -79,8 +86,11 @@
         .header-banner::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top, var(--netflix-grey) 0%, rgba(24,24,24,0.1) 80%, rgba(24,24,24,0.5) 100%);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, var(--netflix-grey) 0%, rgba(24, 24, 24, 0.1) 80%, rgba(24, 24, 24, 0.5) 100%);
             pointer-events: none;
         }
 
@@ -97,8 +107,8 @@
             z-index: 10;
             width: 40px;
             height: 40px;
-            background: rgba(0,0,0,0.7);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-primary);
             border-radius: 50%;
             display: flex;
@@ -126,6 +136,7 @@
             .content-grid {
                 grid-template-columns: 1fr;
             }
+
             .poster-side {
                 display: none;
             }
@@ -140,8 +151,8 @@
         .poster-img {
             width: 100%;
             border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             object-fit: cover;
             height: 400px;
         }
@@ -189,11 +200,11 @@
         }
 
         .badge-grey {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             padding: 2px 8px;
             border-radius: 3px;
             font-size: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .match-score {
@@ -217,8 +228,8 @@
         }
 
         .summary-box {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 20px;
             border-radius: 8px;
             font-size: 15px;
@@ -280,7 +291,7 @@
         .action-btn-grey {
             background: rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 12px 24px;
             border-radius: 4px;
             font-size: 15px;
@@ -301,26 +312,26 @@
 <body>
 
 <!-- Blurred background backdrop -->
-<div class="backdrop-bg" style="background-image: url('{% if film.arkaplan_resmi %}{{ film.arkaplan_resmi.url }}{% elif film.afis %}{{ film.afis.url }}{% endif %}');"></div>
+<div class="backdrop-bg" style="background-image: url('{% if film.afis %}{{ film.afis.url }}{% endif %}');"></div>
 
 <!-- Main Container -->
 <div class="container">
-    
+
     <!-- Top banner / YouTube Player -->
-    <div class="header-banner" id="headerBanner" style="{% if not film.fragman_url %}background-image: url('{% if film.arkaplan_resmi %}{{ film.arkaplan_resmi.url }}{% else %}{{ film.afis.url }}{% endif %}');{% endif %}">
+    <div class="header-banner" id="headerBanner" style="{% if not film.fragman_url %}background-image: url('{% if film.afis %}{{ film.afis.url }}{% endif %}');{% endif %}">
         <a href="{% url 'populer_filmler' %}" class="back-btn" title="Geri Dön"><i class="fa-solid fa-arrow-left"></i></a>
-        
+
         {% if film.fragman_url %}
             <script>
-                document.addEventListener("DOMContentLoaded", function() {
+                document.addEventListener("DOMContentLoaded", function () {
                     const url = "{{ film.fragman_url }}";
-                    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&\?]*).*/;
                     const match = url.match(regExp);
                     if (match && match[2].length === 11) {
                         const embedUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1&loop=1&playlist=${match[2]}&controls=0&showinfo=0&rel=0&enablejsapi=1`;
                         document.getElementById('headerBanner').innerHTML += `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
                     } else {
-                        document.getElementById('headerBanner').style.backgroundImage = "url('{% if film.arkaplan_resmi %}{{ film.arkaplan_resmi.url }}{% else %}{{ film.afis.url }}{% endif %}')";
+                        document.getElementById('headerBanner').style.backgroundImage = "url('{% if film.afis %}{{ film.afis.url }}{% endif %}')";
                     }
                 });
             </script>
@@ -357,7 +368,8 @@
             </div>
 
             <div>
-                <h3 class="section-header"><i class="fa-solid fa-align-left" style="color: var(--netflix-red);"></i> Özet</h3>
+                <h3 class="section-header"><i class="fa-solid fa-align-left" style="color: var(--netflix-red);"></i>
+                    Özet</h3>
                 <div class="summary-box">
                     {{ film.ozet|default:"Bu yapım için henüz özet girilmemiştir." }}
                 </div>
@@ -367,6 +379,18 @@
                 <div class="info-item">
                     <strong>Yönetmen:</strong> <a href="{% url 'yonetmen_detay' film.yonetmen.id %}">{{ film.yonetmen.isim }} ➔</a>
                 </div>
+
+
+                <div class="info-item" style="display: flex; flex-wrap: wrap; gap: 10px 8px; align-items: center;">
+                    <strong>Oyuncular:</strong>
+                    {% for oyuncu in film.oyuncular.all %}
+                        <a href="{% url 'oyuncu_detay' oyuncu.id %}" style="color: var(--text-primary); text-decoration: none; background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 50px; font-size: 13px; transition: var(--transition-smooth);" onmouseover="this.style.background='var(--netflix-red)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+                            {{ oyuncu.isim }}
+                        </a>
+                    {% empty %}
+                        <span style="color: var(--text-secondary); font-style: italic;">Oyuncu kadrosu eklenmemiş.</span>
+                    {% endfor %}
+                </div>
                 <div class="info-item">
                     <strong>Tür:</strong> <span class="badge-grey" style="margin-left: 5px;">{{ film.tur }}</span>
                 </div>
@@ -374,7 +398,7 @@
                     <strong>Puan:</strong> <span>{{ film.puan }} / 5</span>
                 </div>
             </div>
-
+        
             <div class="actions-row">
                 <a href="{% url 'film_duzenle' film.id %}" class="action-btn-red"><i class="fa-solid fa-pen"></i> Düzenle</a>
                 <a href="{% url 'film_sil' film.id %}" class="action-btn-grey" onclick="return confirm('Bu filmi silmek istediğinize emin misiniz?');"><i class="fa-solid fa-trash-can"></i> Sil</a>

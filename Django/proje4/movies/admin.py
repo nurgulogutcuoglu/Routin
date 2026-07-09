@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Yonetmen, Film
+from .models import Yonetmen, Film, Oyuncu
 
 
 # Eğer daha önce düz register ettiysek silip bunu yazalım:
@@ -10,3 +10,4 @@ class YonetmenAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Film)
+admin.site.register(Oyuncu)

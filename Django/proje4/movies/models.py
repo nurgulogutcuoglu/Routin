@@ -1,7 +1,7 @@
 import re
 from django.core.exceptions import ValidationError
-from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import models
 
 
 def validate_no_digits(value):
@@ -25,6 +25,15 @@ class Yonetmen(models.Model):
         return self.isim
 
 
+class Oyuncu(models.Model):
+    isim = models.CharField(max_length=100, validators=[validate_letters_only])
+    biyografi = models.TextField(blank=True, null=True)
+    fotograf = models.ImageField(upload_to="oyuncular/", blank=True, null=True)
+
+    def __str__(self):
+        return self.isim
+
+
 class Film(models.Model):
     baslik = models.CharField(max_length=200, validators=[validate_no_digits])
     yonetmen = models.ForeignKey(Yonetmen, on_delete=models.CASCADE, related_name="filmler")
@@ -43,13 +52,13 @@ class Film(models.Model):
         blank=True,
         null=True
     )
+
     yayin_yili = models.IntegerField(blank=True, null=True)
     sure = models.CharField(max_length=50, blank=True, null=True)
     fragman_url = models.URLField(blank=True, null=True)
     afis = models.ImageField(upload_to="afisler/", blank=True, null=True)
-    arkaplan_resmi = models.ImageField(upload_to="arkaplanlar/", blank=True, null=True)
     ozet = models.TextField(blank=True, null=True)
+    oyuncular = models.ManyToManyField(Oyuncu, related_name="filmler", blank=True)
 
     def __str__(self):
         return self.baslik
-

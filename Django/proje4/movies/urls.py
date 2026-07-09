@@ -13,4 +13,18 @@ urlpatterns = [
     path("film/sil/<int:film_id>/", views.film_sil, name="film_sil"),
     path("yonetmen/duzenle/<int:yonetmen_id>/", views.yonetmen_duzenle, name="yonetmen_duzenle"),
     path("yonetmen/sil/<int:yonetmen_id>/", views.yonetmen_sil, name="yonetmen_sil"),
+
+    # 1. Oyuncuların tamamının listelendiği sayfa adresi (/yonetmenler/ gibi)
+    path("oyuncular/", views.oyuncular, name="oyuncular"),
+
+    # 2. Tıklanan oyuncunun detay/biyografi sayfa adresi (/yonetmen/<id>/ gibi)
+    # <int:oyuncu_id> kısmı, tıklanan oyuncunun benzersiz numarasını dinamik olarak adrese ekler
+    path("oyuncu/<int:oyuncu_id>/", views.oyuncu_detay, name="oyuncu_detay"),
+
+    # 3. Oyuncu düzenleme adresi
+    path("oyuncu/duzenle/<int:oyuncu_id>/", views.oyuncu_duzenle, name="oyuncu_duzenle"),
+
+    # 4. Oyuncu silme adresi
+    path("oyuncu/sil/<int:oyuncu_id>/", views.oyuncu_sil, name="oyuncu_sil"),
+
 ]

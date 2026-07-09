@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ yonetmen.isim }} - Profil</title>
+    <title>{{ oyuncu.isim }} - Profil</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -213,14 +213,17 @@
 <body>
 
 <div class="container">
+    <!-- Profil Üst Aksiyon Butonları (Düzenleme ve Kapatma) -->
     <div class="page-actions">
-        <a href="{% url 'yonetmen_duzenle' yonetmen.id %}" class="action-btn btn-edit" title="Düzenle"><i class="fa-solid fa-pen"></i></a>
-        <a href="{% url 'yonetmenler' %}" class="action-btn btn-close" title="Kapat"><i class="fa-solid fa-xmark"></i></a>
+        <a href="{% url 'oyuncu_duzenle' oyuncu.id %}" class="action-btn btn-edit" title="Düzenle"><i
+                class="fa-solid fa-pen"></i></a>
+        <a href="{% url 'oyuncular' %}" class="action-btn btn-close" title="Kapat"><i class="fa-solid fa-xmark"></i></a>
     </div>
 
+    <!-- Profil Fotoğrafı ve Biyografi -->
     <div class="profil-ust">
-        {% if yonetmen.fotograf %}
-            <img src="{{ yonetmen.fotograf.url }}" class="profil-foto" alt="{{ yonetmen.isim }}">
+        {% if oyuncu.fotograf %}
+            <img src="{{ oyuncu.fotograf.url }}" class="profil-foto" alt="{{ oyuncu.isim }}">
         {% else %}
             <div class="profil-foto-yok">
                 <i class="fa-solid fa-user"></i>
@@ -228,14 +231,15 @@
         {% endif %}
 
         <div class="biyo-kutusu">
-            <h1>{{ yonetmen.isim }}</h1>
-            <p>{{ yonetmen.biyografi|default:"Bu yönetmene ait detaylı biyografi metni henüz eklenmedi." }}</p>
+            <h1>{{ oyuncu.isim }}</h1>
+            <p>{{ oyuncu.biyografi|default:"Bu oyuncuya ait detaylı biyografi metni henüz eklenmedi." }}</p>
         </div>
     </div>
 
+    <!-- Rol Aldığı Filmler Listesi -->
     <div class="film-listesi">
-        <h2><i class="fa-solid fa-clapperboard"></i> Yönettiği Tüm Yapımlar ({{ filmler.count }})</h2>
-        
+        <h2><i class="fa-solid fa-clapperboard"></i> Rol Aldığı Tüm Yapımlar ({{ filmler.count }})</h2>
+
         {% for film in filmler %}
             <div class="film-satir">
                 <div>
@@ -248,12 +252,14 @@
                     <span style="color: #fbbf24; font-weight: bold; font-size: 15px;">
                         <i class="fa-solid fa-star" style="margin-right: 4px;"></i> {{ film.puan }}/5
                     </span>
-                    <a href="{% url 'film_detay' film.id %}" class="film-link">İncele <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+                    <a href="{% url 'film_detay' film.id %}" class="film-link">İncele <i
+                            class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
                 </div>
             </div>
         {% empty %}
             <p style="color: var(--text-secondary); font-style: italic; padding: 15px;">
-                <i class="fa-solid fa-info-circle" style="margin-right: 6px;"></i> Sistemde bu yönetmene ait kayıtlı bir film kaydı henüz yok.
+                <i class="fa-solid fa-info-circle" style="margin-right: 6px;"></i> Sistemde bu oyuncuya ait kayıtlı bir
+                film kaydı henüz yok.
             </p>
         {% endfor %}
     </div>
