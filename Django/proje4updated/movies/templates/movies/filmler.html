@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineSphere - Keşfet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #141414;
+            --netflix-black: #000000;
+            --netflix-grey: #181818;
+            --text-primary: #ffffff;
+            --text-secondary: #a3a3a3;
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--netflix-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--netflix-black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--netflix-red);
+        }
+
+        /* Navbar Style */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 4%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            transition: background-color 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            background-color: var(--netflix-black);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            padding: 15px 4%;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--netflix-red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .brand i {
+            color: var(--netflix-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--netflix-red);
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Search input container */
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            padding: 8px 12px 8px 35px;
+            border-radius: 4px;
+            outline: none;
+            font-size: 14px;
+            width: 200px;
+            transition: var(--transition-smooth);
+        }
+
+        .search-input:focus {
+            width: 280px;
+            border-color: var(--netflix-red);
+            background: rgba(0,0,0,0.85);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        .filter-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-select {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            padding: 8px 30px 8px 12px;
+            border-radius: 4px;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: var(--transition-smooth);
+        }
+
+        .filter-select:focus {
+            border-color: var(--netflix-red);
+        }
+
+        .dropdown-arrow {
+            position: absolute;
+            right: 12px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        .btn-nav-red {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-nav-red:hover {
+            background: #b20710;
+            transform: translateY(-1px);
+        }
+
+        /* Hero / Spotlight Banner Style */
+        .hero-banner {
+            height: 80vh;
+            width: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center 20%;
+            display: flex;
+            align-items: center;
+            padding: 0 4%;
+            margin-bottom: 20px;
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            background: linear-gradient(to top, var(--netflix-dark) 0%, rgba(20,20,20,0.1) 60%, rgba(20,20,20,0.7) 100%),
+                        linear-gradient(to right, rgba(20,20,20,0.9) 0%, rgba(20,20,20,0.5) 40%, rgba(20,20,20,0) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 650px;
+            margin-top: 80px;
+        }
+
+        .hero-title {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .hero-badge {
+            background: var(--netflix-red);
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .hero-rating {
+            color: #46d369; /* green match */
+        }
+
+        .hero-stars {
+            color: #fbbf24;
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #e5e5e5;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            transition: var(--transition-smooth);
+        }
+
+        .hero-btn-play {
+            background-color: var(--text-primary);
+            color: var(--netflix-black);
+        }
+
+        .hero-btn-play:hover {
+            background-color: rgba(255, 255, 255, 0.75);
+            transform: scale(1.03);
+        }
+
+        .hero-btn-info {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: var(--text-primary);
+        }
+
+        .hero-btn-info:hover {
+            background-color: rgba(109, 109, 110, 0.4);
+            transform: scale(1.03);
+        }
+
+        /* Movie Slider Layout */
+        .category-row {
+            padding: 20px 4% 10px 4%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: inline-block;
+            text-transform: capitalize;
+            position: relative;
+        }
+
+        .slider-container {
+            position: relative;
+            margin: 0 -10px;
+        }
+
+        .slider-track {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 15px 10px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .slider-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: calc(100% - 30px);
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: var(--text-primary);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .slider-container:hover .slider-btn {
+            opacity: 1;
+        }
+
+        .slider-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+            font-size: 24px;
+        }
+
+        .slider-btn.prev-btn {
+            left: 0;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .slider-btn.next-btn {
+            right: 0;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+        /* Movie Card Design (Netflix Hover Cards) */
+        .film-kart {
+            flex: 0 0 240px;
+            scroll-snap-align: start;
+            background: var(--netflix-grey);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+            transform-origin: center center;
+        }
+
+        .film-kart:hover {
+            transform: scale(1.1) translateY(-10px);
+            z-index: 30;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+        }
+
+        .kart-afis-container {
+            width: 100%;
+            height: 140px;
+            background-color: #2f2f2f;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .kart-afis-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .kart-yok {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #222, #111);
+            color: var(--text-secondary);
+            font-size: 40px;
+        }
+
+        .kart-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 80%);
+            opacity: 0;
+            display: flex;
+            align-items: flex-end;
+            padding: 10px;
+            transition: var(--transition-smooth);
+        }
+
+        .film-kart:hover .kart-overlay {
+            opacity: 1;
+        }
+
+        .kart-info-pane {
+            padding: 12px;
+            background: var(--netflix-grey);
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .kart-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-primary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .kart-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .kart-rating-green {
+            color: #46d369;
+            font-weight: 700;
+        }
+
+        .kart-imdb-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fbbf24;
+        }
+
+        .kart-year {
+            color: var(--text-secondary);
+        }
+
+        .kart-genres {
+            font-size: 11px;
+            color: var(--text-secondary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Action Buttons on Kart Hover */
+        .kart-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .kart-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .kart-btn:hover {
+            background: var(--text-primary);
+            color: var(--netflix-black);
+            border-color: var(--text-primary);
+            transform: scale(1.1);
+        }
+
+        .kart-btn-play {
+            background: var(--text-primary);
+            color: var(--netflix-black);
+        }
+
+        .kart-btn-play:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .kart-btn-delete:hover {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            border-color: var(--netflix-red);
+        }
+
+        /* Add Film Card (Stylized placeholder card) */
+        .add-film-kart {
+            flex: 0 0 240px;
+            height: 140px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition-smooth);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .add-film-kart:hover {
+            border-color: var(--netflix-red);
+            color: var(--netflix-red);
+            background: rgba(229, 9, 20, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .add-film-kart i {
+            font-size: 28px;
+        }
+
+        .add-film-kart span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Suggestions box styling */
+        .suggestions-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--netflix-grey);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            margin-top: 5px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+        }
+
+        .suggestion-item {
+            padding: 10px 15px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition-smooth);
+        }
+
+        .suggestion-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--netflix-red);
+        }
+
+        /* Autocomplete results dropdown scrollbar */
+        .suggestions-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .suggestions-box::-webkit-scrollbar-thumb {
+            background: #444;
+        }
+
+        /* Modal Overlay Base Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 200;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 40px 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        /* Netflix-style Detail Modal */
+        .netflix-detail-content {
+            background: var(--netflix-grey);
+            width: 100%;
+            max-width: 850px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+            position: relative;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .modal.show .netflix-detail-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-kapat {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-kapat:hover {
+            background: var(--text-primary);
+            color: var(--netflix-black);
+            transform: scale(1.1);
+        }
+
+        .detail-video-container {
+            width: 100%;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            background-color: #000;
+        }
+
+        .detail-video-container::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: 0; top: 0;
+            background: linear-gradient(to top, var(--netflix-grey) 0%, rgba(24,24,24,0.1) 80%, rgba(24,24,24,0.5) 100%);
+            pointer-events: none;
+        }
+
+        .detail-video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .detail-video-overlay-info {
+            position: absolute;
+            bottom: 30px;
+            left: 4%;
+            z-index: 5;
+            max-width: 90%;
+        }
+
+        .detail-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .detail-info-grid {
+            padding: 25px 4%;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .detail-left {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .detail-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .detail-summary {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #d2d2d2;
+        }
+
+        .detail-right {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .detail-right-item {
+            color: var(--text-secondary);
+        }
+
+        .detail-right-item strong {
+            color: var(--text-primary);
+        }
+
+        .detail-right-item a {
+            color: var(--netflix-red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .detail-right-item a:hover {
+            text-decoration: underline;
+        }
+
+        .detail-actions-panel {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .detail-action-btn-red {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .detail-action-btn-red:hover {
+            background: #b20710;
+        }
+
+        .detail-action-btn-grey {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .detail-action-btn-grey:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Netflix-style Form Modal for Movie Add/Edit */
+        .form-modal-content {
+            background: var(--netflix-grey);
+            width: 100%;
+            max-width: 550px;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal.show .form-modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .form-modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        /* Style Django Form Elements dynamically inside paragraph */
+        .form-modal-content form p {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-modal-content form label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-modal-content form input[type="text"],
+        .form-modal-content form input[type="number"],
+        .form-modal-content form input[type="url"],
+        .form-modal-content form select,
+        .form-modal-content form textarea {
+            width: 100%;
+            background: #333;
+            border: 1px solid transparent;
+            color: var(--text-primary);
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .form-modal-content form input:focus,
+        .form-modal-content form select:focus,
+        .form-modal-content form textarea:focus {
+            background: #444;
+            border-color: var(--netflix-red);
+        }
+
+        .form-modal-content form input[type="file"] {
+            color: var(--text-secondary);
+            font-size: 14px;
+            padding: 5px 0;
+        }
+
+        .btn-form-submit {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-form-submit:hover {
+            background: #b20710;
+        }
+
+        .form-errors {
+            background: rgba(229, 9, 20, 0.1);
+            border: 1px solid var(--netflix-red);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #ff8b90;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" id="mainNavbar">
+    <div class="navbar-left">
+        <a href="{% url 'populer_filmler' %}" class="brand"><i class="fa-solid fa-film"></i> CineSphere</a>
+        <ul class="nav-links">
+            <li><a href="{% url 'populer_filmler' %}" class="active">Filmler</a></li>
+            <li><a href="{% url 'yonetmenler' %}">Yönetmenler</a></li>
+        </ul>
+    </div>
+    <div class="navbar-right">
+        <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="movieSearch" oninput="showSuggestions(this.value)" placeholder="Film Ara..." class="search-input" autocomplete="off">
+            <div id="suggestionsBox" class="suggestions-box"></div>
+        </div>
+        <div class="filter-wrapper">
+            <select id="genreFilter" onchange="filterMovies()" class="filter-select">
+                <option value="all">Tüm Türler</option>
+            </select>
+            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+        </div>
+        <button class="btn-nav-red" onclick="modalAc()"><i class="fa-solid fa-circle-plus"></i> Film Ekle</button>
+    </div>
+</nav>
+
+<!-- Hero / Spotlight Banner -->
+{% if manset_film %}
+<div class="hero-banner" style="background-image: url('{% if manset_film.arkaplan_resmi %}{{ manset_film.arkaplan_resmi.url }}{% else %}{{ manset_film.afis.url }}{% endif %}');">
+    <div class="hero-content">
+        <div class="hero-meta">
+            <span class="hero-badge">Öne Çıkan</span>
+            <span class="hero-rating"><i class="fa-solid fa-face-smile"></i> %{% widthratio manset_film.puan 5 100 %} Eşleşme</span>
+            {% if manset_film.yayin_yili %}
+                <span class="hero-year">{{ manset_film.yayin_yili }}</span>
+            {% endif %}
+            {% if manset_film.sure %}
+                <span class="hero-duration">{{ manset_film.sure }}</span>
+            {% endif %}
+            {% if manset_film.imdb_puani %}
+                <span class="hero-stars"><i class="fa-solid fa-star"></i> {{ manset_film.imdb_puani }} IMDb</span>
+            {% endif %}
+        </div>
+        <h1 class="hero-title">{{ manset_film.baslik }}</h1>
+        <p class="hero-desc">{{ manset_film.ozet|default:"Bu öne çıkan yapıt hakkında henüz bir özet girilmedi. Sinematik deneyime kapılmak için hemen detayları inceleyin." }}</p>
+        <div class="hero-buttons">
+            {% if manset_film.fragman_url %}
+                <button class="hero-btn hero-btn-play" onclick="openNetflixModal('{{ manset_film.id }}', true)"><i class="fa-solid fa-play"></i> Oynat</button>
+            {% endif %}
+            <button class="hero-btn hero-btn-info" onclick="openNetflixModal('{{ manset_film.id }}')"><i class="fa-solid fa-circle-info"></i> Daha Fazla Bilgi</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Categorized Sliders -->
+<div id="slidersSection">
+    {% for genre, genre_filmler in genres_dict.items %}
+    <div class="category-row" data-genre-name="{{ genre }}">
+        <h2 class="category-title">{{ genre }}</h2>
+        <div class="slider-container">
+            <button class="slider-btn prev-btn" onclick="slide(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="slider-track">
+                {% for film in genre_filmler %}
+                <div class="film-kart" 
+                     data-id="{{ film.id }}"
+                     data-genre="{{ film.tur }}"
+                     data-title="{{ film.baslik }}"
+                     onclick="if(!event.target.closest('.kart-actions')) openNetflixModal('{{ film.id }}');">
+                    
+                    <div class="kart-afis-container">
+                        {% if film.afis %}
+                            <img src="{{ film.afis.url }}" alt="{{ film.baslik }}" class="kart-afis-img" loading="lazy">
+                        {% else %}
+                            <div class="kart-yok"><i class="fa-solid fa-clapperboard"></i></div>
+                        {% endif %}
+                        <div class="kart-overlay">
+                            <div class="kart-actions">
+                                <button class="kart-btn kart-btn-play" title="İncele" onclick="openNetflixModal('{{ film.id }}')"><i class="fa-solid fa-eye"></i></button>
+                                <a href="{% url 'film_duzenle' film.id %}" class="kart-btn" title="Düzenle" onclick="event.stopPropagation();"><i class="fa-solid fa-pen"></i></a>
+                                <a href="{% url 'film_sil' film.id %}" class="kart-btn kart-btn-delete" title="Sil" onclick="event.stopPropagation(); return confirm('Bu filmi silmek istediğinize emin misiniz?');"><i class="fa-solid fa-trash-can"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="kart-info-pane">
+                        <div class="kart-title">{{ film.baslik }}</div>
+                        <div class="kart-meta-row">
+                            <span class="kart-rating-green">%{% widthratio film.puan 5 100 %} Eşleşme</span>
+                            {% if film.imdb_puani %}
+                                <span class="kart-imdb-badge"><i class="fa-solid fa-star"></i> {{ film.imdb_puani }}</span>
+                            {% endif %}
+                            {% if film.yayin_yili %}
+                                <span class="kart-year">{{ film.yayin_yili }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="kart-genres">{{ film.yonetmen.isim }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="slider-btn next-btn" onclick="slide(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Permanent Quick Actions Row (Always Visible) -->
+    <div class="category-row">
+        <h2 class="category-title">Hızlı İşlemler</h2>
+        <div class="slider-container">
+            <div style="display: flex; gap: 15px; padding: 10px 0; flex-wrap: wrap;">
+                <div class="add-film-kart" onclick="modalAc()">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Yeni Film Ekle</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Netflix Style Cinematic Detail Modal -->
+<div class="modal" id="netflixDetailModal" onclick="closeNetflixModalOnOutsideClick(event)">
+    <div class="netflix-detail-content">
+        <span class="modal-kapat" onclick="closeNetflixModal()"><i class="fa-solid fa-xmark"></i></span>
+        
+        <div class="detail-video-container" id="detailModalVideoContainer">
+            <!-- Dynamic content goes here (YouTube Iframe or Background Image) -->
+        </div>
+
+        <div class="detail-info-grid">
+            <div class="detail-left">
+                <div class="detail-meta">
+                    <span class="hero-badge" id="modalBadge">Film</span>
+                    <span class="hero-rating" id="modalRating"></span>
+                    <span id="modalYear"></span>
+                    <span id="modalDuration"></span>
+                </div>
+                <div class="detail-summary" id="modalSummary"></div>
+                <div class="detail-actions-panel">
+                    <a href="#" id="modalEditBtn" class="detail-action-btn-grey"><i class="fa-solid fa-pen"></i> Düzenle</a>
+                    <a href="#" id="modalDeleteBtn" class="detail-action-btn-red" onclick="return confirm('Bu filmi kütüphaneden silmek istediğinize emin misiniz?');"><i class="fa-solid fa-trash"></i> Sil</a>
+                </div>
+            </div>
+            
+            <div class="detail-right">
+                <div class="detail-right-item">
+                    <strong>Yönetmen:</strong> <span id="modalDirector"></span>
+                </div>
+                <div class="detail-right-item">
+                    <strong>Tür:</strong> <span id="modalGenre" class="hero-badge" style="background: rgba(255,255,255,0.1); margin-left: 5px;"></span>
+                </div>
+                <div class="detail-right-item" id="modalImdbContainer">
+                    <strong>IMDb Puanı:</strong> <span id="modalImdb" style="color: #fbbf24; font-weight: 700;"></span> / 10
+                </div>
+                <div class="detail-right-item">
+                    <strong>Puanlama:</strong> <span id="modalScore" style="font-weight: 700;"></span> / 5
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stylized Add Film Modal -->
+<div class="modal" id="filmModal" onclick="modalDisTikla(event)">
+    <div class="form-modal-content">
+        <span class="modal-kapat" onclick="modalKapat()"><i class="fa-solid fa-xmark"></i></span>
+        <h2 class="form-modal-title"><i class="fa-solid fa-circle-plus" style="color: var(--netflix-red);"></i> Yeni Film Ekle</h2>
+        
+        {% if form.errors %}
+        <div class="form-errors">
+            <strong>Lütfen hataları giderin:</strong>
+            {{ form.errors }}
+        </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-form-submit">Kaydet</button>
+        </form>
+    </div>
+</div>
+
+<!-- Database serialized in JSON for fast client-side rendering -->
+<script>
+    const moviesData = {
+        {% for film in filmler %}
+        "{{ film.id }}": {
+            "id": "{{ film.id }}",
+            "baslik": "{{ film.baslik|escapejs }}",
+            "yonetmen": "{{ film.yonetmen.isim|escapejs }}",
+            "yonetmen_url": "{% url 'yonetmen_detay' film.yonetmen.id %}",
+            "tur": "{{ film.tur|escapejs }}",
+            "puan": "{{ film.puan }}",
+            "imdb_puani": "{{ film.imdb_puani|default:'N/A' }}",
+            "yayin_yili": "{{ film.yayin_yili|default:'N/A' }}",
+            "sure": "{{ film.sure|default:'N/A' }}",
+            "fragman_url": "{{ film.fragman_url|default:'' }}",
+            "afis": "{% if film.afis %}{{ film.afis.url }}{% else %}{% endif %}",
+            "arkaplan": "{% if film.arkaplan_resmi %}{{ film.arkaplan_resmi.url }}{% elif film.afis %}{{ film.afis.url }}{% else %}{% endif %}",
+            "ozet": "{{ film.ozet|default:'Bu film için henüz bir özet metni girilmedi.'|escapejs }}",
+            "edit_url": "{% url 'film_duzenle' film.id %}",
+            "delete_url": "{% url 'film_sil' film.id %}"
+        },
+        {% endfor %}
+    };
+
+    // Scroll Navbar logic
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('mainNavbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Populate category filters
+    document.addEventListener("DOMContentLoaded", function() {
+        const genreFilter = document.getElementById('genreFilter');
+        const genres = new Set();
+        
+        Object.values(moviesData).forEach(movie => {
+            if (movie.tur) {
+                genres.add(movie.tur);
+            }
+        });
+        
+        genres.forEach(genre => {
+            const option = document.createElement('option');
+            option.value = genre;
+            option.textContent = genre;
+            genreFilter.appendChild(option);
+        });
+
+        {% if form.errors %}
+        modalAc();
+        {% endif %}
+    });
+
+    // Slider horizontal scroll control
+    function slide(button, direction) {
+        const container = button.parentElement;
+        const track = container.querySelector('.slider-track');
+        const cardWidth = 252; // 240px card + 12px gap
+        const visibleWidth = track.clientWidth;
+        const scrollAmount = cardWidth * Math.floor(visibleWidth / cardWidth) * direction;
+        
+        track.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+
+    // Interactive Netflix Movie Detail Modal
+    function openNetflixModal(id, autoplay = false) {
+        const movie = moviesData[id];
+        if (!movie) return;
+
+        // Set text content
+        document.getElementById('modalRating').innerHTML = `<i class="fa-solid fa-face-smile"></i> %${Math.round((movie.puan / 5) * 100)} Eşleşme`;
+        document.getElementById('modalYear').textContent = movie.yayin_yili !== 'N/A' ? movie.yayin_yili : '';
+        document.getElementById('modalDuration').textContent = movie.sure !== 'N/A' ? movie.sure : '';
+        document.getElementById('modalSummary').textContent = movie.ozet;
+        document.getElementById('modalDirector').innerHTML = `<a href="${movie.yonetmen_url}">${movie.yonetmen} ➔</a>`;
+        document.getElementById('modalGenre').textContent = movie.tur;
+        document.getElementById('modalScore').textContent = movie.puan;
+
+        // IMDb
+        const imdbContainer = document.getElementById('modalImdbContainer');
+        if (movie.imdb_puani !== 'N/A' && movie.imdb_puani) {
+            document.getElementById('modalImdb').textContent = movie.imdb_puani;
+            imdbContainer.style.display = 'block';
+        } else {
+            imdbContainer.style.display = 'none';
+        }
+
+        // Edit / Delete Buttons
+        document.getElementById('modalEditBtn').href = movie.edit_url;
+        document.getElementById('modalDeleteBtn').href = movie.delete_url;
+
+        // Video / Backdrop config
+        const videoContainer = document.getElementById('detailModalVideoContainer');
+        const embedUrl = getYouTubeEmbedUrl(movie.fragman_url);
+
+        if (embedUrl && autoplay) {
+            videoContainer.innerHTML = `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        } else if (embedUrl) {
+            // Display backdrop image with a overlay click-to-play banner
+            videoContainer.style.backgroundImage = `url('${movie.arkaplan || movie.afis}')`;
+            videoContainer.innerHTML = `
+                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center; z-index:5;">
+                    <button class="hero-btn hero-btn-play" onclick="playTrailerInModal('${embedUrl}')" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5); padding: 15px 35px; border-radius:50px;">
+                        <i class="fa-solid fa-play"></i> Fragmanı İzle
+                    </button>
+                </div>
+                <div class="detail-video-overlay-info">
+                    <h1 class="detail-title">${movie.baslik}</h1>
+                </div>
+            `;
+        } else {
+            // Just backdrop image
+            videoContainer.style.backgroundImage = `url('${movie.arkaplan || movie.afis}')`;
+            videoContainer.innerHTML = `
+                <div class="detail-video-overlay-info">
+                    <h1 class="detail-title">${movie.baslik}</h1>
+                </div>
+            `;
+        }
+
+        // Open Modal
+        const modal = document.getElementById('netflixDetailModal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10);
+    }
+
+    function playTrailerInModal(embedUrl) {
+        const videoContainer = document.getElementById('detailModalVideoContainer');
+        videoContainer.style.backgroundImage = 'none';
+        videoContainer.innerHTML = `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    }
+
+    function getYouTubeEmbedUrl(url) {
+        if (!url) return '';
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=0&enablejsapi=1` : '';
+    }
+
+    function closeNetflixModal() {
+        const modal = document.getElementById('netflixDetailModal');
+        modal.classList.remove('show');
+        
+        // Stop playing video on close
+        const videoContainer = document.getElementById('detailModalVideoContainer');
+        videoContainer.innerHTML = '';
+        
+        setTimeout(() => modal.style.display = 'none', 300);
+    }
+
+    function closeNetflixModalOnOutsideClick(event) {
+        const modal = document.getElementById('netflixDetailModal');
+        const content = modal.querySelector('.netflix-detail-content');
+        if (event.target === modal && !content.contains(event.target)) {
+            closeNetflixModal();
+        }
+    }
+
+    // Django Form Modal control
+    function modalAc() {
+        let m = document.getElementById('filmModal');
+        m.style.display = 'flex';
+        setTimeout(() => m.classList.add('show'), 10);
+    }
+
+    function modalKapat() {
+        let m = document.getElementById('filmModal');
+        m.classList.remove('show');
+        setTimeout(() => m.style.display = 'none', 300);
+    }
+
+    function modalDisTikla(event) {
+        let modalBox = document.getElementById('filmModal');
+        if (event.target === modalBox) {
+            modalKapat();
+        }
+    }
+
+    // Movie list Filter & Search control
+    function filterMovies() {
+        const selectedGenre = document.getElementById('genreFilter').value;
+        const searchQuery = document.getElementById('movieSearch').value.trim().toLowerCase();
+        
+        const cards = document.querySelectorAll('.film-kart');
+        
+        cards.forEach(card => {
+            const genre = card.getAttribute('data-genre');
+            const title = card.getAttribute('data-title').toLowerCase();
+            
+            const genreMatch = (selectedGenre === 'all' || genre === selectedGenre);
+            const searchMatch = (searchQuery === '' || title.includes(searchQuery));
+            
+            if (genreMatch && searchMatch) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Show/hide category rows based on matching cards inside them
+        const rows = document.querySelectorAll('.category-row');
+        rows.forEach(row => {
+            const rowGenre = row.getAttribute('data-genre-name');
+            if (!rowGenre) {
+                row.style.display = 'block';
+                return;
+            }
+            const visibleCards = row.querySelectorAll('.film-kart:not([style*="display: none"])');
+            
+            // Check if matches genre selection
+            const genreRowMatch = (selectedGenre === 'all' || rowGenre === selectedGenre);
+            
+            if (genreRowMatch && visibleCards.length > 0) {
+                row.style.display = 'block';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Autocomplete Search Suggestions
+    function showSuggestions(value) {
+        const query = value.trim().toLowerCase();
+        const suggestionsBox = document.getElementById('suggestionsBox');
+        
+        if (query === '') {
+            suggestionsBox.innerHTML = '';
+            suggestionsBox.style.display = 'none';
+            filterMovies();
+            return;
+        }
+        
+        const matches = [];
+        Object.values(moviesData).forEach(movie => {
+            if (movie.baslik.toLowerCase().includes(query)) {
+                matches.push(movie);
+            }
+        });
+        
+        if (matches.length > 0) {
+            suggestionsBox.innerHTML = '';
+            matches.slice(0, 5).forEach(movie => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = movie.baslik;
+                item.onclick = function() {
+                    document.getElementById('movieSearch').value = movie.baslik;
+                    suggestionsBox.innerHTML = '';
+                    suggestionsBox.style.display = 'none';
+                    filterMovies();
+                    openNetflixModal(movie.id);
+                };
+                suggestionsBox.appendChild(item);
+            });
+            suggestionsBox.style.display = 'block';
+        } else {
+            suggestionsBox.innerHTML = '';
+            suggestionsBox.style.display = 'none';
+        }
+        
+        filterMovies();
+    }
+
+    // Close suggestions box if clicked outside
+    document.addEventListener('click', function(e) {
+        const box = document.getElementById('suggestionsBox');
+        const input = document.getElementById('movieSearch');
+        if (box && input && e.target !== box && e.target !== input) {
+            box.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>

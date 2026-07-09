@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineSphere - Yönetmenler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #050710;
+            --netflix-black: #020308;
+            --netflix-grey: #0c0f24;
+            --text-primary: #ffffff;
+            --text-secondary: #a3a3a3;
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--netflix-dark);
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+                radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px),
+                linear-gradient(135deg, #050714 0%, #0c0f24 50%, #020308 100%);
+            background-size: 250px 250px, 400px 400px, 100% 100%;
+            background-position: 0 0, 120px 200px, 0 0;
+            background-attachment: fixed;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        /* Navbar Style */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 4%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--netflix-black);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--netflix-red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .brand i {
+            color: var(--netflix-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--netflix-red);
+        }
+
+        .btn-nav-red {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-nav-red:hover {
+            background: #b20710;
+            transform: translateY(-1px);
+        }
+
+        /* Content Container */
+        .page-container {
+            padding: 40px 4%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title i {
+            color: var(--netflix-red);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        /* Modernized Director Card */
+        .yonetmen-kart {
+            background: var(--netflix-grey);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: var(--transition-smooth);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .yonetmen-kart:hover {
+            transform: scale(1.08) translateY(-5px);
+            border-color: var(--netflix-red);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+        }
+
+        .foto-avatar-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+        }
+
+        .foto-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition-smooth);
+        }
+
+        .yonetmen-kart:hover .foto-avatar {
+            border-color: var(--netflix-red);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.3);
+        }
+
+        .foto-avatar-yok {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #2b2b2b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition-smooth);
+        }
+
+        .yonetmen-kart:hover .foto-avatar-yok {
+            border-color: var(--netflix-red);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.3);
+        }
+
+        .yonetmen-isim {
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .film-sayisi-badge {
+            background: rgba(229, 9, 20, 0.1);
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            color: #ff8b90;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .bio-preview {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 5px;
+            height: 38px;
+        }
+
+        /* Hover actions */
+        .kart-aksiyonlar {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: var(--transition-smooth);
+        }
+
+        .yonetmen-kart:hover .kart-aksiyonlar {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.85);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .btn-edit:hover {
+            background: var(--text-primary);
+            color: var(--netflix-black);
+            border-color: var(--text-primary);
+        }
+
+        .btn-delete:hover {
+            background: var(--netflix-red);
+            border-color: var(--netflix-red);
+        }
+
+        /* Add director placeholder card */
+        .btn-arti-kart {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 12px;
+            height: auto;
+            min-height: 290px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition-smooth);
+            padding: 30px;
+        }
+
+        .btn-arti-kart:hover {
+            border-color: var(--netflix-red);
+            color: var(--netflix-red);
+            background: rgba(229, 9, 20, 0.04);
+            transform: translateY(-5px);
+        }
+
+        .btn-arti-kart i {
+            font-size: 40px;
+        }
+
+        .btn-arti-kart span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Modal Structure */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 200;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 20px;
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .form-modal-content {
+            background: var(--netflix-grey);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: var(--transition-smooth);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal.show .form-modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-kapat {
+            position: absolute;
+            top: 15px; right: 15px;
+            width: 32px; height: 32px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-kapat:hover {
+            background: var(--text-primary);
+            color: var(--netflix-black);
+        }
+
+        .form-modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Django form style */
+        .form-modal-content form p {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-modal-content form label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-modal-content form input[type="text"],
+        .form-modal-content form textarea {
+            width: 100%;
+            background: #333;
+            border: 1px solid transparent;
+            color: var(--text-primary);
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .form-modal-content form input:focus,
+        .form-modal-content form textarea:focus {
+            background: #444;
+            border-color: var(--netflix-red);
+        }
+
+        .form-modal-content form input[type="file"] {
+            color: var(--text-secondary);
+        }
+
+        .btn-form-submit {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-form-submit:hover {
+            background: #b20710;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="{% url 'populer_filmler' %}" class="brand"><i class="fa-solid fa-film"></i> CineSphere</a>
+        <ul class="nav-links">
+            <li><a href="{% url 'populer_filmler' %}">Filmler</a></li>
+            <li><a href="{% url 'yonetmenler' %}" class="active">Yönetmenler</a></li>
+            <li><a href="{% url 'oyuncular' %}">Oyuncular</a></li>
+        </ul>
+    </div>
+    <div class="navbar-right">
+        <button class="btn-nav-red" onclick="modalAc()"><i class="fa-solid fa-user-plus"></i> Yönetmen Ekle</button>
+    </div>
+</nav>
+
+<!-- Content -->
+<div class="page-container">
+    <div class="page-header">
+        <h2 class="page-title"><i class="fa-solid fa-user-tie"></i> Yönetmen Dünyası</h2>
+    </div>
+    
+    <div class="grid-container">
+        {% for yonetmen in yonetmenler %}
+            <div class="yonetmen-kart" onclick="if(!event.target.closest('.kart-aksiyonlar')) location.href='{% url 'yonetmen_detay' yonetmen.id %}';">
+                
+                <!-- Action Buttons -->
+                <div class="kart-aksiyonlar">
+                    <a href="{% url 'yonetmen_duzenle' yonetmen.id %}" class="action-btn btn-edit" title="Düzenle" onclick="event.stopPropagation();"><i class="fa-solid fa-pen"></i></a>
+                    <a href="{% url 'yonetmen_sil' yonetmen.id %}" class="action-btn btn-delete" title="Sil" onclick="event.stopPropagation(); return confirm('Bu yönetmeni silmek istediğinize emin misiniz?')" ><i class="fa-solid fa-trash-can"></i></a>
+                </div>
+
+                <div class="foto-avatar-wrapper">
+                    {% if yonetmen.fotograf %}
+                        <img src="{{ yonetmen.fotograf.url }}" alt="{{ yonetmen.isim }}" class="foto-avatar" loading="lazy">
+                    {% else %}
+                        <div class="foto-avatar-yok">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="yonetmen-isim">{{ yonetmen.isim }}</div>
+                <div class="film-sayisi-badge">
+                    <i class="fa-solid fa-video"></i> {{ yonetmen.filmler.count }} Film
+                </div>
+                <div class="bio-preview">
+                    {{ yonetmen.biyografi|default:"Bu yönetmen hakkında biyografi girilmemiş." }}
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- Add card button -->
+        <div class="btn-arti-kart" onclick="modalAc()">
+            <i class="fa-solid fa-plus"></i>
+            <span>Yeni Yönetmen Ekle</span>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="yonetmenModal" onclick="modalDisTikla(event)">
+    <div class="form-modal-content">
+        <span class="modal-kapat" onclick="modalKapat()"><i class="fa-solid fa-xmark"></i></span>
+        <h2 class="form-modal-title"><i class="fa-solid fa-user-plus" style="color: var(--netflix-red); margin-right:8px;"></i> Yeni Yönetmen Ekle</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-form-submit">Yönetmeni Kaydet</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    {% if form.errors %}
+    window.addEventListener('DOMContentLoaded', () => {
+        modalAc();
+    });
+    {% endif %}
+
+    function modalAc() {
+        let m = document.getElementById('yonetmenModal');
+        m.style.display = 'flex';
+        setTimeout(() => m.classList.add('show'), 10);
+    }
+
+    function modalKapat() {
+        let m = document.getElementById('yonetmenModal');
+        m.classList.remove('show');
+        setTimeout(() => m.style.display = 'none', 300);
+    }
+
+    function modalDisTikla(event) {
+        let modalBox = document.getElementById('yonetmenModal');
+        if (event.target === modalBox) {
+            modalKapat();
+        }
+    }
+
+    // Letter validation
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('#id_isim').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+            input.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[0-9]/g, '');
+            });
+        });
+    });
+</script>
+</body>
+</html>

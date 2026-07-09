@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ oyuncu.isim }} - Profil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #050710;
+            --netflix-black: #020308;
+            --netflix-grey: #0c0f24;
+            --text-primary: #ffffff;
+            --text-secondary: #a3a3a3;
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--netflix-dark);
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+                radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px),
+                linear-gradient(135deg, #050714 0%, #0c0f24 50%, #020308 100%);
+            background-size: 250px 250px, 400px 400px, 100% 100%;
+            background-position: 0 0, 120px 200px, 0 0;
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: var(--netflix-grey);
+            max-width: 1000px;
+            width: 100%;
+            padding: 45px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .page-actions {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 15px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-edit {
+            background: var(--netflix-red);
+            color: #ffffff;
+            border-color: var(--netflix-red);
+        }
+
+        .btn-edit:hover {
+            background: #b20710;
+        }
+
+        .btn-close {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .btn-close:hover {
+            background: var(--text-primary);
+            color: var(--netflix-black);
+        }
+
+        .profil-ust {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 40px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .profil-ust {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .profil-foto {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--netflix-red);
+            box-shadow: 0 10px 25px rgba(229, 9, 20, 0.2);
+            transition: var(--transition-smooth);
+        }
+
+        .profil-foto-yok {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: #2a2a2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            color: var(--text-secondary);
+            border: 4px solid var(--netflix-red);
+            box-shadow: 0 10px 25px rgba(229, 9, 20, 0.2);
+        }
+
+        .biyo-kutusu {
+            flex: 1;
+        }
+
+        .biyo-kutusu h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            font-weight: 800;
+        }
+
+        .biyo-kutusu p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .film-listesi h2 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .film-listesi h2 i {
+            color: var(--netflix-red);
+        }
+
+        .film-satir {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 18px 25px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--netflix-red);
+            transition: var(--transition-smooth);
+        }
+
+        .film-satir:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(6px);
+        }
+
+        .film-link {
+            background: var(--text-primary);
+            color: var(--netflix-black);
+            text-decoration: none;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        .film-link:hover {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Profil Üst Aksiyon Butonları (Düzenleme ve Kapatma) -->
+    <div class="page-actions">
+        <a href="{% url 'oyuncu_duzenle' oyuncu.id %}" class="action-btn btn-edit" title="Düzenle"><i
+                class="fa-solid fa-pen"></i></a>
+        <a href="{% url 'oyuncular' %}" class="action-btn btn-close" title="Kapat"><i class="fa-solid fa-xmark"></i></a>
+    </div>
+
+    <!-- Profil Fotoğrafı ve Biyografi -->
+    <div class="profil-ust">
+        {% if oyuncu.fotograf %}
+            <img src="{{ oyuncu.fotograf.url }}" class="profil-foto" alt="{{ oyuncu.isim }}">
+        {% else %}
+            <div class="profil-foto-yok">
+                <i class="fa-solid fa-user"></i>
+            </div>
+        {% endif %}
+
+        <div class="biyo-kutusu">
+            <h1>{{ oyuncu.isim }}</h1>
+            <p>{{ oyuncu.biyografi|default:"Bu oyuncuya ait detaylı biyografi metni henüz eklenmedi." }}</p>
+        </div>
+    </div>
+
+    <!-- Rol Aldığı Filmler Listesi -->
+    <div class="film-listesi">
+        <h2><i class="fa-solid fa-clapperboard"></i> Rol Aldığı Tüm Yapımlar ({{ filmler.count }})</h2>
+
+        {% for film in filmler %}
+            <div class="film-satir">
+                <div>
+                    <strong style="font-size: 16px; color: var(--text-primary);">{{ film.baslik }}</strong>
+                    <span style="color: var(--text-secondary); margin-left: 20px; font-size: 13px;">
+                        <i class="fa-solid fa-masks-theater" style="margin-right: 4px;"></i> {{ film.tur }}
+                    </span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <span style="color: #fbbf24; font-weight: bold; font-size: 15px;">
+                        <i class="fa-solid fa-star" style="margin-right: 4px;"></i> {{ film.puan }}/5
+                    </span>
+                    <a href="{% url 'film_detay' film.id %}" class="film-link">İncele <i
+                            class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+                </div>
+            </div>
+        {% empty %}
+            <p style="color: var(--text-secondary); font-style: italic; padding: 15px;">
+                <i class="fa-solid fa-info-circle" style="margin-right: 6px;"></i> Sistemde bu oyuncuya ait kayıtlı bir
+                film kaydı henüz yok.
+            </p>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>

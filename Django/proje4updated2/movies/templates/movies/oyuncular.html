@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineSphere - Oyuncular</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #050710;
+            --netflix-black: #020308;
+            --netflix-grey: #0c0f24;
+            --text-primary: #ffffff;
+            --text-secondary: #a3a3a3;
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--netflix-dark);
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+                radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px),
+                linear-gradient(135deg, #050714 0%, #0c0f24 50%, #020308 100%);
+            background-size: 250px 250px, 400px 400px, 100% 100%;
+            background-position: 0 0, 120px 200px, 0 0;
+            background-attachment: fixed;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        /* Navbar Style */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 4%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--netflix-black);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--netflix-red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .brand i {
+            color: var(--netflix-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--netflix-red);
+        }
+
+        .btn-nav-red {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-nav-red:hover {
+            background: #b20710;
+            transform: translateY(-1px);
+        }
+
+        /* Content Container */
+        .page-container {
+            padding: 40px 4%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title i {
+            color: var(--netflix-red);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        /* Oyuncu Kartı Tasarımı */
+        .oyuncu-kart {
+            background: var(--netflix-grey);
+            border-radius: 8px;
+            padding: 24px 16px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            overflow: hidden;
+        }
+
+        .oyuncu-kart:hover {
+            transform: scale(1.05) translateY(-5px);
+            background: #222;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: rgba(229, 9, 20, 0.3);
+        }
+
+        /* Kart Aksiyon Butonları (Düzenle - Sil) */
+        .kart-aksiyonlar {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: var(--transition-smooth);
+            z-index: 10;
+        }
+
+        .oyuncu-kart:hover .kart-aksiyonlar {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-edit {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-edit:hover {
+            background: var(--text-primary);
+            color: var(--netflix-black);
+            transform: scale(1.15);
+        }
+
+        .btn-delete {
+            background: rgba(229, 9, 20, 0.2);
+            color: #ff4a5a;
+        }
+
+        .btn-delete:hover {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            transform: scale(1.15);
+        }
+
+        /* Avatar Görsel Alanı */
+        .foto-avatar-wrapper {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 18px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: var(--transition-smooth);
+        }
+
+        .oyuncu-kart:hover .foto-avatar-wrapper {
+            border-color: var(--netflix-red);
+        }
+
+        .foto-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .foto-avatar-yok {
+            width: 100%;
+            height: 100%;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #666;
+        }
+
+        .oyuncu-isim {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .film-sayisi-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .bio-preview {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Artı Butonlu Boş Kart (Yeni Ekle Butonu) */
+        .btn-arti-kart {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            color: var(--text-secondary);
+            gap: 12px;
+        }
+
+        .btn-arti-kart:hover {
+            border-color: var(--netflix-red);
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .btn-arti-kart i {
+            font-size: 32px;
+        }
+
+        .btn-arti-kart span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Modal Stilleri */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 200;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 40px 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .form-modal-content {
+            background: var(--netflix-grey);
+            width: 100%;
+            max-width: 550px;
+            border-radius: 8px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            position: relative;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin-top: 50px;
+        }
+
+        .modal.show .form-modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-kapat {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-secondary);
+            transition: var(--transition-smooth);
+        }
+
+        .modal-kapat:hover {
+            color: var(--netflix-red);
+        }
+
+        .form-modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Django form tasarımları */
+        .form-modal-content form p {
+            margin-bottom: 18px;
+        }
+
+        .form-modal-content form label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .form-modal-content form input[type="text"],
+        .form-modal-content form textarea {
+            width: 100%;
+            padding: 12px;
+            background: #2b2b2b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            font-family: inherit;
+            transition: var(--transition-smooth);
+        }
+
+        .form-modal-content form input:focus,
+        .form-modal-content form textarea:focus {
+            background: #444;
+            border-color: var(--netflix-red);
+        }
+
+        .form-modal-content form input[type="file"] {
+            color: var(--text-secondary);
+            font-size: 14px;
+            padding: 5px 0;
+        }
+
+        .btn-form-submit {
+            background: var(--netflix-red);
+            color: var(--text-primary);
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-form-submit:hover {
+            background: #b20710;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="{% url 'populer_filmler' %}" class="brand"><i class="fa-solid fa-film"></i> CineSphere</a>
+        <ul class="nav-links">
+            <li><a href="{% url 'populer_filmler' %}">Filmler</a></li>
+            <li><a href="{% url 'yonetmenler' %}">Yönetmenler</a></li>
+            <li><a href="{% url 'oyuncular' %}" class="active">Oyuncular</a></li>
+        </ul>
+    </div>
+    <div class="navbar-right">
+        <button class="btn-nav-red" onclick="modalAc()"><i class="fa-solid fa-user-plus"></i> Oyuncu Ekle</button>
+    </div>
+</nav>
+
+<!-- Content -->
+<div class="page-container">
+    <div class="page-header">
+        <h2 class="page-title"><i class="fa-solid fa-users"></i> Oyuncu Dünyası</h2>
+    </div>
+
+    <div class="grid-container">
+        {% for oyuncu in oyuncular %}
+            <div class="oyuncu-kart"
+                 onclick="if(!event.target.closest('.kart-aksiyonlar')) location.href='{% url 'oyuncu_detay' oyuncu.id %}';">
+
+                <!-- Action Buttons -->
+                <div class="kart-aksiyonlar">
+                    <a href="{% url 'oyuncu_duzenle' oyuncu.id %}" class="action-btn btn-edit" title="Düzenle"
+                       onclick="event.stopPropagation();"><i class="fa-solid fa-pen"></i></a>
+                    <a href="{% url 'oyuncu_sil' oyuncu.id %}" class="action-btn btn-delete" title="Sil"
+                       onclick="event.stopPropagation(); return confirm('Bu oyuncuyu silmek istediğinize emin misiniz?')"><i
+                            class="fa-solid fa-trash-can"></i></a>
+                </div>
+
+                <div class="foto-avatar-wrapper">
+                    {% if oyuncu.fotograf %}
+                        <img src="{{ oyuncu.fotograf.url }}" alt="{{ oyuncu.isim }}" class="foto-avatar" loading="lazy">
+                    {% else %}
+                        <div class="foto-avatar-yok">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="oyuncu-isim">{{ oyuncu.isim }}</div>
+                <div class="film-sayisi-badge">
+                    <i class="fa-solid fa-video"></i> {{ oyuncu.filmler.count }} Film
+                </div>
+                <div class="bio-preview">
+                    {{ oyuncu.biyografi|default:"Bu oyuncu hakkında biyografi girilmemiş." }}
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- Artı Butonlu Hızlı Ekleme Kartı -->
+        <div class="btn-arti-kart" onclick="modalAc()">
+            <i class="fa-solid fa-plus"></i>
+            <span>Yeni Oyuncu Ekle</span>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ekleme Formu -->
+<div class="modal" id="oyuncuModal" onclick="modalDisTikla(event)">
+    <div class="form-modal-content">
+        <span class="modal-kapat" onclick="modalKapat()"><i class="fa-solid fa-xmark"></i></span>
+        <h2 class="form-modal-title"><i class="fa-solid fa-user-plus"
+                                        style="color: var(--netflix-red); margin-right:8px;"></i> Yeni Oyuncu Ekle</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-form-submit">Oyuncuyu Kaydet</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    {% if form.errors %}
+        window.addEventListener('DOMContentLoaded', () => {
+            modalAc();
+        });
+    {% endif %}
+
+    function modalAc() {
+        let m = document.getElementById('oyuncuModal');
+        m.style.display = 'flex';
+        setTimeout(() => m.classList.add('show'), 10);
+    }
+
+    function modalKapat() {
+        let m = document.getElementById('oyuncuModal');
+        m.classList.remove('show');
+        setTimeout(() => m.style.display = 'none', 300);
+    }
+
+    function modalDisTikla(event) {
+        let modalBox = document.getElementById('oyuncuModal');
+        if (event.target === modalBox) {
+            modalKapat();
+        }
+    }
+</script>
+
+</body>
+</html>
