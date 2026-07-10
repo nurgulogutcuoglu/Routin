@@ -1082,7 +1082,7 @@
                              data-id="{{ film.id }}"
                              data-genre="{{ film.tur }}"
                              data-title="{{ film.baslik }}"
-                             onclick="if(!event.target.closest('.kart-actions')) openNetflixModal('{{ film.id }}');">
+                             onclick="if(!event.target.closest('.kart-actions')) location.href='{% url 'film_detay' film.id %}';">
 
                             <div class="kart-afis-container">
                                 {% if film.afis %}
@@ -1093,9 +1093,9 @@
                                 {% endif %}
                                 <div class="kart-overlay">
                                     <div class="kart-actions">
-                                        <button class="kart-btn kart-btn-play" title="İncele"
-                                                onclick="openNetflixModal('{{ film.id }}')"><i
-                                                class="fa-solid fa-eye"></i></button>
+                                        <a href="{% url 'film_detay' film.id %}" class="kart-btn kart-btn-play" title="İncele">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
                                         <a href="{% url 'film_duzenle' film.id %}" class="kart-btn" title="Düzenle"
                                            onclick="event.stopPropagation();"><i class="fa-solid fa-pen"></i></a>
                                         <a href="{% url 'film_sil' film.id %}" class="kart-btn kart-btn-delete"

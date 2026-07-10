@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework import generics
 
 # Form import:
 from .forms import FilmForm, YonetmenForm, OyuncuForm
 # Model import:
 from .models import Film, Yonetmen, Oyuncu
+from .serializers import YonetmenSerializer, OyuncuSerializer, FilmSerializer
 
 
 def populer_filmler(request):
@@ -168,3 +170,39 @@ def oyuncu_sil(request, oyuncu_id):
 
     # Silme işleminden sonra kullanıcıyı tekrar oyuncular listesine gönder
     return redirect("oyuncular")
+
+
+# --- API GÖRÜNÜMLERİ (VIEW'LAR) ---
+
+# Film API Görünümleri
+class FilmListAPIView(generics.ListCreateAPIView):
+    queryset = Film.objects.all()
+    serializer_class = FilmSerializer
+
+
+class FilmDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Film.objects.all()
+    serializer_class = FilmSerializer
+
+    # Yönetmen API Görünümleri
+
+
+class YonetmenListAPIView(generics.ListCreateAPIView):
+    queryset = Yonetmen.objects.all()
+    serializer_class = YonetmenSerializer
+
+
+class YonetmenDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Yonetmen.objects.all()
+    serializer_class = YonetmenSerializer
+
+
+# Oyuncu API Görünümleri
+class OyuncuListAPIView(generics.ListCreateAPIView):
+    queryset = Oyuncu.objects.all()
+    serializer_class = OyuncuSerializer
+
+
+class OyuncuDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Oyuncu.objects.all()
+    serializer_class = OyuncuSerializer

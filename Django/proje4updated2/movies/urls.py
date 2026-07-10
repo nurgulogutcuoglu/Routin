@@ -27,4 +27,18 @@ urlpatterns = [
     # 4. Oyuncu silme adresi
     path("oyuncu/sil/<int:oyuncu_id>/", views.oyuncu_sil, name="oyuncu_sil"),
 
+    # --- API ADRESLERİ (ENDPOINT'LER) ---
+
+    # Filmler API
+    path("api/filmler/", views.FilmListAPIView.as_view(), name="api_film_listesi"),
+    path("api/filmler/<int:pk>/", views.FilmDetailAPIView.as_view(), name="api_film_detayi"),
+
+    # Yönetmenler API
+    path("api/yonetmenler/", views.YonetmenListAPIView.as_view(), name="api_yonetmen_listesi"),
+    path("api/yonetmenler/<int:pk>/", views.YonetmenDetailAPIView.as_view(), name="api_yonetmen_detayi"),
+
+    # Oyuncular API
+    path("api/oyuncular/", views.OyuncuListAPIView.as_view(), name="api_oyuncu_listesi"),
+    path("api/oyuncular/<int:pk>/", views.OyuncuDetailAPIView.as_view(), name="api_oyuncu_detayi"),
+
 ]
